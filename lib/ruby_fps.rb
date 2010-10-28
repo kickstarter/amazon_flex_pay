@@ -18,6 +18,7 @@ require 'ruby_fps/api'
 RestClient.log = 'stdout'
 
 module RubyFPS
+  API_VERSION = '2008-09-17'
 
   class << self
     ##

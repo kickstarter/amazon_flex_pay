@@ -11,26 +11,24 @@ module RubyFPS
     end
 
     def submit
-      if valid?
-        params = self.to_hash.merge(
-          'Action' => action,
-          'AWSAccessKeyId' => RubyFPS.access_key,
-          'Version' => '2008-09-17',
-          'Timestamp' => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-        )
+      raise 'API request is invalid' unless valid?
 
-        params['SignatureVersion'] = 2
-        params['SignatureMethod'] = 'HmacSHA256'
-        params['Signature'] = RubyFPS.signature(RubyFPS.api_endpoint, params)
+      params = self.to_hash.merge(
+        'Action' => action,
+        'AWSAccessKeyId' => RubyFPS.access_key,
+        'Version' => RubyFPS::API_VERSION,
+        'Timestamp' => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+      )
 
-        begin
-          response = RestClient.get(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
-          self.class::Response.new(MultiXml.parse(response.body)[action + 'Response'])
-        rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-          RubyFPS::ErrorResponse.new(MultiXml.parse(e.response.body)['Response'])
-        end
-      else
-        raise 'raise a better error here'
+      params['SignatureVersion'] = 2
+      params['SignatureMethod'] = 'HmacSHA256'
+      params['Signature'] = RubyFPS.signature(RubyFPS.api_endpoint, params)
+
+      begin
+        response = RestClient.get(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
+        self.class::Response.new(MultiXml.parse(response.body)[action + 'Response'])
+      rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
+        RubyFPS::ErrorResponse.new(MultiXml.parse(e.response.body)['Response'])
       end
     end
 
