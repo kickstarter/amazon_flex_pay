@@ -16,8 +16,23 @@ module RubyFPS
 
     attr_accessor :access_key
     attr_accessor :secret_key
-    attr_accessor :api_endpoint
-    attr_accessor :pipeline_endpoint
+
+    attr_writer :api_endpoint
+    def api_endpoint
+      @api_endpoint ||= 'https://fps.sandbox.amazonaws.com/'
+    end
+
+    attr_writer :pipeline_endpoint
+    def pipeline_endpoint
+      @pipeline_endpoint ||= 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
+    end
+
+    # RubyFPS defaults to the Amazon Payments sandbox.
+    # Call RubyFPS.go_live! to enable live transactions and real money.
+    def go_live!
+      self.api_endpoint = 'https://fps.amazonaws.com/'
+      self.pipeline_endpoint = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
+    end
 
     ##
     # API Methods
@@ -181,5 +196,3 @@ module RubyFPS
   end
 end
 
-RubyFPS.api_endpoint = 'https://fps.sandbox.amazonaws.com/'
-RubyFPS.pipeline_endpoint = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
