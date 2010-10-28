@@ -8,15 +8,9 @@ require 'multi_xml'
 require 'active_support/core_ext/string/inflections' # camelcase, underscore
 
 require 'ruby_fps/signing'
-
 require 'ruby_fps/model'
 
-require 'ruby_fps/response'
-require 'ruby_fps/error_response'
-require 'ruby_fps/request'
 require 'ruby_fps/api'
-
-require 'ruby_fps/pipeline'
 require 'ruby_fps/pipelines'
 
 RestClient.log = 'stdout'

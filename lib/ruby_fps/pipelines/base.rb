@@ -1,7 +1,7 @@
-module RubyFPS
+module RubyFPS::Pipelines
   # Base model for pipelines.
   # Note that pipelines use camelcase(:lower) for all parameters, where API requests use full camelcase.
-  class Pipeline < Model
+  class Base < RubyFPS::Model
     attr_accessor :caller_reference # required
     attr_accessor :cobranding_style, :cobranding_url, :website_description
 

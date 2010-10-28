@@ -1,5 +1,5 @@
-module RubyFPS
-  class Request < Model
+module RubyFPS::API
+  class Base < RubyFPS::Model
     def self.requires(*fields)
       # TODO: save requiredness
     end
@@ -28,7 +28,16 @@ module RubyFPS
         response = RestClient.get(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
         self.class::Response.new(MultiXml.parse(response.body)[action + 'Response'])
       rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-        RubyFPS::ErrorResponse.new(MultiXml.parse(e.response.body)['Response'])
+        RubyFPS::API::ErrorResponse.new(MultiXml.parse(e.response.body)['Response'])
+      end
+    end
+
+    class BaseResponse < RubyFPS::Model
+      attr_accessor :request_id
+
+      def initialize(hash)
+        assign(hash['ResponseMetadata'])
+        assign(hash[hash.keys.find{|k| k.match /Result$/}])
       end
     end
 

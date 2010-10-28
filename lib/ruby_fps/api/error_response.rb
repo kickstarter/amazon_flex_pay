@@ -1,5 +1,5 @@
-module RubyFPS
-  class ErrorResponse < Model
+module RubyFPS::API
+  class ErrorResponse < RubyFPS::Model
     attr_accessor :request_id
 
     attr_reader :errors
@@ -7,7 +7,7 @@ module RubyFPS
       @errors = [val['Error']].flatten.map{|e| Error.new(e)}
     end
 
-    class Error < Model
+    class Error < RubyFPS::Model
       attr_accessor :code, :message
     end
   end
