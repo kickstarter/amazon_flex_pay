@@ -26,10 +26,6 @@ module RubyFPS
   PIPELINE_VERSION = '2009-01-09'
 
   class << self
-    ##
-    # Config
-    ##
-
     attr_accessor :access_key
     attr_accessor :secret_key
 
