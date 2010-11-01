@@ -32,6 +32,18 @@ module RubyFPS
     def verify_signature(url, params)
       submit(:verify_signature, :url_end_point => url, :http_parameters => RubyFPS.query_string(params))
     end
+    
+    def cancel(transaction_id, options = {})
+      submit(:cancel, options.merge(:transaction_id => transaction_id))
+    end
+    
+    def cancel_token(token_id, options = {})
+      submit(:cancel_token, options.merge(:token_id => token_id))
+    end
+    
+    def settle(transaction_id, options = {})
+      submit(:settle, options.merge(:reserve_transaction_id => transaction_id))
+    end
 
     protected
 
