@@ -13,9 +13,21 @@ module RubyFPS
       Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, RubyFPS.secret_key, signable_string)).strip
     end
 
-    def query_string(params)
+    # Flattens a possibly-nested hash into a query string for Amazon.
+    # With Amazon, nested hashes are flattened with a period, as follows:
+    #
+    #   RubyFPS.query_string(:foo => {:hello => 'world'})
+    #   => "foo.hello=world"
+    #
+    def query_string(params, prefix = nil)
+      prefix = "#{prefix}." if prefix
       params.keys.sort { |a, b| a.to_s <=> b.to_s }.collect do |key|
-        "#{key}=#{escape(params[key])}"
+        case val = params[key]
+          when Hash
+          query_string(val, key)
+          else
+          "#{prefix}#{key}=#{escape val}"
+        end
       end.join('&')
     end
 

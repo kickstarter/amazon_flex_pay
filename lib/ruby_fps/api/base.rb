@@ -46,7 +46,8 @@ module RubyFPS::API
     def to_hash
       instance_variables.inject({}) do |hash, iname|
         name = iname[1..-1]
-        hash.merge(name.camelcase => send(name))
+        val  = send(name)
+        hash.merge(name.camelcase => (val.respond_to :to_hash) ? val.to_hash : val)
       end
     end
 
