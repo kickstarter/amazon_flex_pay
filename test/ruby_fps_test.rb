@@ -8,6 +8,8 @@ class RubyFPSTest < RubyFPS::Test
     # but good enough for regression testing.
     assert_equal "Ro7iH0M+1hIR/SXGvT1kmF6Tg5uUKRSUd1AWaJHOcpE=", RubyFPS.signature('http://example.com/api', {:hello => 'world'})
   end
+  
+  ## query strings
 
   should "create a sorted query string" do
     assert_equal "a=1&b=2&c=3&d=4&e=5", RubyFPS.query_string(:a => 1, :b => 2, :c => 3, :d => 4, :e => 5)
@@ -19,5 +21,19 @@ class RubyFPSTest < RubyFPS::Test
 
   should "percent-encode spaces and other characters for a query string" do
     assert_equal 'a=hello%20world%21', RubyFPS.query_string(:a => 'hello world!')
+  end
+  
+  ## verifying a request
+
+  should "verify a GET request" do
+    request = stub(:get? => true, :protocol => 'http://', :host_with_port => 'example.com', :path => '/foo/bar', :query_string => 'a=1&b=2')
+    RubyFPS.expects(:verify_signature).with('http://example.com/foo/bar', 'a=1&b=2').returns(true)
+    assert RubyFPS.verify_request(request)
+  end
+
+  should "verify a POST request" do
+    request = stub(:get? => false, :protocol => 'http://', :host_with_port => 'example.com', :path => '/foo/bar', :raw_post => 'a=1&b=2')
+    RubyFPS.expects(:verify_signature).with('http://example.com/foo/bar', 'a=1&b=2').returns(true)
+    assert RubyFPS.verify_request(request)
   end
 end
