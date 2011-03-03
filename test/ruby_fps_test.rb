@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class RubyFPSTest < RubyFPS::Test
+  ## signing
+
   should "generate a valid v2 signature" do
     # NOTE: I'm not sure of a supplied signature example that I can copy, so
     # I set this one up by making sure signatures were being accepted by
@@ -8,7 +10,7 @@ class RubyFPSTest < RubyFPS::Test
     # but good enough for regression testing.
     assert_equal "Ro7iH0M+1hIR/SXGvT1kmF6Tg5uUKRSUd1AWaJHOcpE=", RubyFPS.signature('http://example.com/api', {:hello => 'world'})
   end
-  
+
   ## query strings
 
   should "create a sorted query string" do
@@ -22,7 +24,7 @@ class RubyFPSTest < RubyFPS::Test
   should "percent-encode spaces and other characters for a query string" do
     assert_equal 'a=hello%20world%21', RubyFPS.query_string(:a => 'hello world!')
   end
-  
+
   ## verifying a request
 
   should "verify a GET request" do

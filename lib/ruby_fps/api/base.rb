@@ -26,18 +26,25 @@ module RubyFPS::API
 
       begin
         response = RestClient.get(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
-        self.class::Response.new(MultiXml.parse(response.body)[action + 'Response'])
+        self.class::Response.from_xml(response.body)
       rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-        RubyFPS::API::ErrorResponse.new(MultiXml.parse(e.response.body)['Response'])
+        RubyFPS::API::ErrorResponse.from_xml(e.response.body)
       end
     end
 
     class BaseResponse < RubyFPS::Model
       attr_accessor :request_id
 
+      def self.from_xml(xml)
+        hash = MultiXml.parse(xml)
+        response_key = hash.keys.find{|k| k.match(/Response$/)}
+        new(hash[response_key])
+      end
+
       def initialize(hash)
         assign(hash['ResponseMetadata'])
-        assign(hash[hash.keys.find{|k| k.match /Result$/}])
+        result_key = hash.keys.find{|k| k.match(/Result$/)}
+        assign(hash[result_key]) if hash[result_key] # not all APIs have a result object
       end
     end
 

@@ -1,9 +1,12 @@
 require 'ruby_fps/api/base'
 require 'ruby_fps/api/error_response'
 
+require 'ruby_fps/api/cancel'
+require 'ruby_fps/api/cancel_token'
 require 'ruby_fps/api/get_recipient_verification_status'
 require 'ruby_fps/api/get_token_by_caller'
 require 'ruby_fps/api/get_transaction_status'
+require 'ruby_fps/api/settle'
 require 'ruby_fps/api/verify_signature'
 
 module RubyFPS

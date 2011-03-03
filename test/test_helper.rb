@@ -8,6 +8,8 @@ root = File.dirname(__FILE__) + '/../lib'
 $LOAD_PATH.unshift root
 require root + '/ruby_fps'
 
+require 'response_samples'
+
 class RubyFPS::Test < Test::Unit::TestCase
   def default_test; end # quiet Test::Unit
 

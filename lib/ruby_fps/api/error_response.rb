@@ -1,5 +1,9 @@
 module RubyFPS::API
   class ErrorResponse < RubyFPS::Model
+    def self.from_xml(xml)
+      new(MultiXml.parse(xml)['Response'])
+    end
+
     attr_accessor :request_id
 
     attr_reader :errors
