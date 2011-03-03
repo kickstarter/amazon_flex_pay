@@ -23,14 +23,20 @@ module RubyFPS
     def get_recipient_verification_status(recipient_token_id)
       submit(:get_recipient_verification_status, :recipient_token_id => recipient_token_id)
     end
-
+    
     # This is how you verify IPNs and pipeline responses.
-    # Returns true if the url and params have been signed by Amazon, false otherwise.
-    #
-    # +url+ is the full request path up to the query string, as from request.url in the controller
-    # +params+ is the full params hash from the controller
+    # Pass the entire request object.
+    def verify_request(request)
+      verify_signature(
+        # url without query string
+        request.protocol + request.host_with_port + request.path,
+        # raw parameters
+        request.get? ? request.query_string : request.raw_post
+      )
+    end
+
     def verify_signature(url, params)
-      submit(:verify_signature, :url_end_point => url, :http_parameters => RubyFPS.query_string(params))
+      submit(:verify_signature, :url_end_point => url, :http_parameters => params)
     end
     
     def cancel(transaction_id, options = {})
