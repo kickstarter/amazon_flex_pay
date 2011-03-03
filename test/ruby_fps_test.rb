@@ -38,4 +38,37 @@ class RubyFPSTest < RubyFPS::Test
     RubyFPS.expects(:verify_signature).with('http://example.com/foo/bar', 'a=1&b=2').returns(true)
     assert RubyFPS.verify_request(request)
   end
+
+  # api basics
+
+  class TestRequest < RubyFPS::API::Base
+    attr_accessor :foo
+    class Response; end
+  end
+
+  should "add necessary fields and sign api requests" do
+    Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
+
+    request = TestRequest.new({:foo => 'bar'})
+    request.expects(:run).with do |arg|
+      url, query_string = arg.split('?')
+      assert_equal RubyFPS.api_endpoint, url
+      params = query_string.split('&').inject({}) do |hash, param| hash.merge(param.split('=').first => param.split('=').last) end
+
+      # unique to the api call
+      assert_equal 'bar', params['Foo']
+
+      # standard additions
+      assert_equal 'foo', params['AWSAccessKeyId']
+      assert_equal 'TestRequest', params['Action']
+      assert_equal '2008-09-17', params['Version']
+
+      # the signature is backwards-calculated for regression testing
+      assert_equal 'PMRg6QCPwmr8eKFRkIKJhTTHEkdj6qHfYBoJqjx9UZg%3D', params['Signature']
+      assert_equal 'HmacSHA256',                                     params['SignatureMethod']
+      assert_equal '2',                                              params['SignatureVersion']
+      true
+    end
+    request.submit
+  end
 end

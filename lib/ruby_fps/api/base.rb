@@ -14,7 +14,7 @@ module RubyFPS::API
       raise 'API request is invalid' unless valid?
 
       params = self.to_hash.merge(
-        'Action' => action,
+        'Action' => self.class.to_s.split('::').last,
         'AWSAccessKeyId' => RubyFPS.access_key,
         'Version' => RubyFPS::API_VERSION,
         'Timestamp' => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -24,12 +24,7 @@ module RubyFPS::API
       params['SignatureMethod'] = 'HmacSHA256'
       params['Signature'] = RubyFPS.signature(RubyFPS.api_endpoint, params)
 
-      begin
-        response = RestClient.get(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
-        self.class::Response.from_xml(response.body)
-      rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-        RubyFPS::API::ErrorResponse.from_xml(e.response.body)
-      end
+      run(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
     end
 
     class BaseResponse < RubyFPS::Model
@@ -49,17 +44,22 @@ module RubyFPS::API
     end
 
     protected
-
-    def to_hash
-      instance_variables.inject({}) do |hash, iname|
-        name = iname[1..-1]
-        val  = send(name)
-        hash.merge(name.camelcase => (val.respond_to :to_hash) ? val.to_hash : val)
+    
+    def run(url)
+      begin
+        response = RestClient.get(url)
+        self.class::Response.from_xml(response.body)
+      rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
+        RubyFPS::API::ErrorResponse.from_xml(e.response.body)
       end
     end
 
-    def action
-      self.class.to_s.split('::').last
+    def to_hash
+      (instance_variables - ['@mocha']).inject({}) do |hash, iname|
+        name = iname[1..-1]
+        val  = send(name)
+        hash.merge(name.camelcase => (val.respond_to? :to_hash) ? val.to_hash : val)
+      end
     end
   end
 end
