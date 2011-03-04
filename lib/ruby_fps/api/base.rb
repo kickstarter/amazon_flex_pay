@@ -1,18 +1,6 @@
 module RubyFPS::API
   class Base < RubyFPS::Model
-    def self.requires(*fields)
-      # TODO: save requiredness
-    end
-
-    def valid?
-      # check required fields
-      # check enumerated fields
-      true
-    end
-
     def submit
-      raise 'API request is invalid' unless valid?
-
       begin
         url = RubyFPS.api_endpoint + '?' + RubyFPS.query_string(self.to_params)
         response = RestClient.get(url)
