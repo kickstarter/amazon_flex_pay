@@ -4,7 +4,8 @@ module RubyFPS::API
     attribute :transaction_amount, :type => :amount
 
     class Response < BaseResponse
-      attributes :transaction_id, :transaction_status
+      attribute :transaction_id
+      attribute :transaction_status, :enumeration => :transaction_status
     end
   end
 end

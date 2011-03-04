@@ -1,9 +1,9 @@
 module RubyFPS::API
   class GetRecipientVerificationStatus < Base
-    attributes :recipient_token_id
+    attribute :recipient_token_id
 
     class Response < BaseResponse
-      attributes :recipient_verification_status
+      attribute :recipient_verification_status, :enumeration => :recipient_verification_status
     end
   end
 end

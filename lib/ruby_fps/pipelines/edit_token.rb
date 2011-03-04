@@ -1,6 +1,6 @@
 module RubyFPS::Pipelines
   class EditToken < Base
-    attributes :token_id # required
-    attributes :payment_method # allowed payment types
+    attribute :token_id # required
+    attribute :payment_method, :enumeration => :payment_method
   end
 end

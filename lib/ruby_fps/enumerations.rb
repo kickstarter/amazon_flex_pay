@@ -1,5 +1,6 @@
 # pulled from documentation, with some obvious corrections
 module RubyFPS::Enumerations
+  AmountType = %w(Exact Maximum Minimum) # undocumented
   ChargeFeeTo = %w(Caller Recipient)
   CSOwner = %w(Caller Recipient) # undocumented
   CurrencyCode = %w(USD)
@@ -16,4 +17,5 @@ module RubyFPS::Enumerations
   TokenType = %w(MultiUse Recurring SingleUse Unrestricted)
   TransactionalRole = %w(Caller Recipient Sender)
   TransactionStatus = %w(Cancelled Failure Pending Reserved Success)
+  UsageLimitType = %w(Amount Count) # undocumented
 end

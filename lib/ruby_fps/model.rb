@@ -76,7 +76,7 @@ module RubyFPS
 
     def assign(hash)
       hash.each do |k, v|
-        send("#{k.to_s.underscore}=", v)
+        send("#{k.to_s.underscore}=", v.respond_to?(:strip) ? v.strip : v)
       end
     end
   end
