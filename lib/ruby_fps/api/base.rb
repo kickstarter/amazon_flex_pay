@@ -44,14 +44,10 @@ module RubyFPS::API
     protected
 
     def to_hash
-      parameter_names.inject({}) do |hash, name|
+      attribute_names.inject({}) do |hash, name|
         val  = send(name)
-        hash.merge(name.camelcase => (val.respond_to? :to_hash) ? val.to_hash : val)
+        hash.merge(name.camelcase => val)
       end
-    end
-
-    def parameter_names
-      (instance_variables - ['@mocha']).map{|iname| iname[1..-1]}
     end
 
     def action_name

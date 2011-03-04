@@ -27,10 +27,9 @@ module RubyFPS::Pipelines
     protected
 
     def to_hash
-      instance_variables.inject({}) do |hash, iname|
-        name = iname[1..-1]
+      attribute_names.inject({}) do |hash, name|
         val  = send(name)
-        hash.merge(name.camelcase(:lower) => (val.respond_to? :to_hash) ? val.to_hash : val)
+        hash.merge(name.camelcase(:lower) => val)
       end
     end
 
