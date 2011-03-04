@@ -42,18 +42,27 @@ class RubyFPSTest < RubyFPS::Test
   # api basics
 
   class TestRequest < RubyFPS::API::Base
-    attr_accessor :foo
+    attr_accessor :foo, :amount
+
+    def amount=(hash)
+      @amount = RubyFPS::DataTypes::Amount.new(hash)
+    end
+
     class Response; end
   end
 
   should "add necessary fields and sign api requests" do
     Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
 
-    request = TestRequest.new({:foo => 'bar'})
+    request = TestRequest.new(:foo => 'bar', :amount => {:value => '3.14', :currency_code => 'USD'})
     params = request.to_params
 
-    # unique to the api call
+    # simple attributes
     assert_equal 'bar', params['Foo']
+
+    # complex attributes
+    assert_equal '3.14', params['Amount']['Value']
+    assert_equal 'USD', params['Amount']['CurrencyCode']
 
     # standard additions
     assert_equal 'foo', params['AWSAccessKeyId']
@@ -61,9 +70,13 @@ class RubyFPSTest < RubyFPS::Test
     assert_equal '2008-09-17', params['Version']
 
     # the signature is backwards-calculated for regression testing
-    assert_equal 'PMRg6QCPwmr8eKFRkIKJhTTHEkdj6qHfYBoJqjx9UZg=', params['Signature']
+    assert_equal '7nugNc5UdqKn7cgsaH2Di1w9Mx0AouaJiTi8bsN7wWc=', params['Signature']
     assert_equal 'HmacSHA256',                                   params['SignatureMethod']
     assert_equal 2,                                              params['SignatureVersion']
+  end
+
+  should "not allow unknown values for enumerated attributes" do
+    assert_raises ArgumentError do TestRequest.new(:amount => {:currency_code => 'UNKOWN'}) end
   end
 
   # pipeline basics

@@ -8,7 +8,8 @@ module RubyFPS
 
     def to_hash
       attribute_names.inject({}) do |hash, name|
-        hash.merge(format_key(name) => format_value(send(name)))
+        val = send(name)
+        hash.merge(format_key(name) => val.is_a?(RubyFPS::Model) ? val.to_hash : format_value(send(name)))
       end
     end
 

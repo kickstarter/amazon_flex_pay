@@ -9,6 +9,8 @@ require 'active_support/core_ext/string/inflections' # camelcase, underscore
 
 require 'ruby_fps/signing'
 require 'ruby_fps/model'
+require 'ruby_fps/data_types'
+require 'ruby_fps/enumerations'
 
 require 'ruby_fps/api'
 require 'ruby_fps/pipelines'
