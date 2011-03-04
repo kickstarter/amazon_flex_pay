@@ -24,6 +24,21 @@ module ResponseSamples
     </CancelTokenResponse>
     END
   end
+  
+  def error_response
+    <<-END
+    <?xml version="1.0"?>
+    <Response>
+      <Errors>
+        <Error>
+          <Code>InvalidParams</Code>
+          <Message>transactionId has to be a valid transaction ID. Specified value: FAKE</Message>
+        </Error>
+      </Errors>
+      <RequestID>50ca0b2f-9435-4852-a889-89d144c07ff6</RequestID>
+    </Response>
+    END
+  end
 
   def get_recipient_verification_status_response
     <<-END

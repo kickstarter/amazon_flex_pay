@@ -35,6 +35,17 @@ class RubyFPSTest < RubyFPS::Test
     assert response.request_id
   end
 
+  should "parse error responses" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::ErrorResponse.from_xml(error_response)
+    end
+    assert response.request_id
+    assert_equal 1, response.errors.count
+    assert response.errors.first.code
+    assert response.errors.first.message
+  end
+
   should "construct a GetRecipientVerificationStatus request" do
     RubyFPS::API::GetRecipientVerificationStatus.any_instance.expects(:submit)
     assert_nothing_raised do
