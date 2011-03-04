@@ -42,8 +42,8 @@ class RubyFPSTest < RubyFPS::Test
   # api basics
 
   class TestRequest < RubyFPS::API::Base
-    attr_accessor :foo, :amount
-    complex :amount
+    attributes :foo, :amount
+    attribute :amount, :type => :amount
 
     class Response; end
   end
@@ -79,7 +79,7 @@ class RubyFPSTest < RubyFPS::Test
   # pipeline basics
 
   class TestPipeline < RubyFPS::Pipelines::Base
-    attr_accessor :foo
+    attribute :foo
   end
 
   should "add necessary fields and sign pipeline urls" do

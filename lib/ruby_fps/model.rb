@@ -1,25 +1,47 @@
 module RubyFPS
   class Model
-    def self.enumerated(field, source = nil)
-      source ||= field
-      class_eval <<-END
-        def #{field}=(val)
-          options = RubyFPS::Enumerations::#{source.to_s.camelcase}
-          unless options.include?(val)
-            raise ArgumentError.new("\#{val} is not an allowed option (\#{options.join(', ')})")
-          end
-          @#{field} = val
-        end
-      END
-    end
+    class << self
+      def attributes(*attrs)
+        attrs.each{|attr| attribute(attr)}
+      end
 
-    def self.complex(field, data_type = nil)
-      data_type ||= field
-      class_eval <<-END
-        def #{field}=(hash)
-          @#{field} = RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)
+      def attribute(attr, options = {})
+        @attributes ||= []
+        @attributes << attr.to_s
+        attr_accessor attr
+
+        if options[:enumeration]
+          enumerated_attribute(attr, options[:enumeration])
+        elsif options[:type]
+          complex_attribute(attr, options[:type])
         end
-      END
+      end
+
+      def attribute_names
+        @attributes || []
+      end
+
+      def enumerated_attribute(attr, source = nil)
+        source ||= attr
+        class_eval <<-END
+          def #{attr}=(val)
+            options = RubyFPS::Enumerations::#{source.to_s.camelcase}
+            unless options.include?(val)
+              raise ArgumentError.new("\#{val} is not an allowed option (\#{options.join(', ')})")
+            end
+            @#{attr} = val
+          end
+        END
+      end
+
+      def complex_attribute(attr, data_type = nil)
+        data_type ||= attr
+        class_eval <<-END
+          def #{attr}=(hash)
+            @#{attr} = RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)
+          end
+        END
+      end
     end
 
     def initialize(hash)
@@ -29,7 +51,7 @@ module RubyFPS
     protected
 
     def to_hash
-      attribute_names.inject({}) do |hash, name|
+      self.class.attribute_names.inject({}) do |hash, name|
         val = send(name)
         hash.merge(format_key(name) => val.is_a?(RubyFPS::Model) ? val.to_hash : format_value(send(name)))
       end
@@ -50,10 +72,6 @@ module RubyFPS
         else
         val.to_s
       end
-    end
-
-    def attribute_names
-      (instance_variables - ['@mocha']).map{|iname| iname[1..-1]}
     end
 
     def assign(hash)

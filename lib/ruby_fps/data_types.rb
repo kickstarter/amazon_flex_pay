@@ -1,7 +1,7 @@
 # Complex Data Types pulled from the documentation
 module RubyFPS::DataTypes
   class Amount < RubyFPS::Model
-    attr_accessor :currency_code, :value
-    enumerated :currency_code
+    attribute :currency_code, :enumeration => :currency_code
+    attribute :value
   end
 end

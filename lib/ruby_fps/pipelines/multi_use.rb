@@ -1,6 +1,6 @@
 module RubyFPS::Pipelines
   class MultiUse < Base
-    attr_accessor :global_amount_limit, # required
+    attributes :global_amount_limit, # required
                   :amount_type, :transaction_amount,
                   :currency_code, :payment_method, :payment_reason,
                   :is_recipient_cobranding, :recipient_token_list,
