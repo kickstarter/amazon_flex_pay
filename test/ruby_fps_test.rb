@@ -50,25 +50,19 @@ class RubyFPSTest < RubyFPS::Test
     Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
 
     request = TestRequest.new({:foo => 'bar'})
-    request.expects(:run).with do |arg|
-      url, query_string = arg.split('?')
-      assert_equal RubyFPS.api_endpoint, url
-      params = query_string.split('&').inject({}) do |hash, param| hash.merge(param.split('=').first => param.split('=').last) end
+    params = request.to_params
 
-      # unique to the api call
-      assert_equal 'bar', params['Foo']
+    # unique to the api call
+    assert_equal 'bar', params['Foo']
 
-      # standard additions
-      assert_equal 'foo', params['AWSAccessKeyId']
-      assert_equal 'TestRequest', params['Action']
-      assert_equal '2008-09-17', params['Version']
+    # standard additions
+    assert_equal 'foo', params['AWSAccessKeyId']
+    assert_equal 'TestRequest', params['Action']
+    assert_equal '2008-09-17', params['Version']
 
-      # the signature is backwards-calculated for regression testing
-      assert_equal 'PMRg6QCPwmr8eKFRkIKJhTTHEkdj6qHfYBoJqjx9UZg%3D', params['Signature']
-      assert_equal 'HmacSHA256',                                     params['SignatureMethod']
-      assert_equal '2',                                              params['SignatureVersion']
-      true
-    end
-    request.submit
+    # the signature is backwards-calculated for regression testing
+    assert_equal 'PMRg6QCPwmr8eKFRkIKJhTTHEkdj6qHfYBoJqjx9UZg=', params['Signature']
+    assert_equal 'HmacSHA256',                                   params['SignatureMethod']
+    assert_equal 2,                                              params['SignatureVersion']
   end
 end

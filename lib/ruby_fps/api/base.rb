@@ -13,6 +13,16 @@ module RubyFPS::API
     def submit
       raise 'API request is invalid' unless valid?
 
+      begin
+        url = RubyFPS.api_endpoint + '?' + RubyFPS.query_string(self.to_params)
+        response = RestClient.get(url)
+        self.class::Response.from_xml(response.body)
+      rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
+        RubyFPS::API::ErrorResponse.from_xml(e.response.body)
+      end
+    end
+
+    def to_params
       params = self.to_hash.merge(
         'Action' => self.class.to_s.split('::').last,
         'AWSAccessKeyId' => RubyFPS.access_key,
@@ -24,7 +34,7 @@ module RubyFPS::API
       params['SignatureMethod'] = 'HmacSHA256'
       params['Signature'] = RubyFPS.signature(RubyFPS.api_endpoint, params)
 
-      run(RubyFPS.api_endpoint + '?' + RubyFPS.query_string(params))
+      params
     end
 
     class BaseResponse < RubyFPS::Model
@@ -44,22 +54,16 @@ module RubyFPS::API
     end
 
     protected
-    
-    def run(url)
-      begin
-        response = RestClient.get(url)
-        self.class::Response.from_xml(response.body)
-      rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-        RubyFPS::API::ErrorResponse.from_xml(e.response.body)
-      end
-    end
 
     def to_hash
-      (instance_variables - ['@mocha']).inject({}) do |hash, iname|
-        name = iname[1..-1]
+      parameter_names.inject({}) do |hash, name|
         val  = send(name)
         hash.merge(name.camelcase => (val.respond_to? :to_hash) ? val.to_hash : val)
       end
+    end
+
+    def parameter_names
+      (instance_variables - ['@mocha']).map{|iname| iname[1..-1]}
     end
   end
 end
