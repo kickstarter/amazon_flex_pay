@@ -12,7 +12,7 @@ module RubyFPS::API
 
     def to_params
       params = self.to_hash.merge(
-        'Action' => self.class.to_s.split('::').last,
+        'Action' => action_name,
         'AWSAccessKeyId' => RubyFPS.access_key,
         'Version' => RubyFPS::API_VERSION,
         'Timestamp' => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -52,6 +52,10 @@ module RubyFPS::API
 
     def parameter_names
       (instance_variables - ['@mocha']).map{|iname| iname[1..-1]}
+    end
+
+    def action_name
+      self.class.to_s.split('::').last
     end
   end
 end
