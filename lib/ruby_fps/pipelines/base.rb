@@ -5,7 +5,7 @@ module RubyFPS::Pipelines
     attr_accessor :caller_reference # required
     attr_accessor :cobranding_style, :cobranding_url, :website_description
 
-    def url(return_url)
+    def to_params(return_url)
       params = self.to_hash.merge(
         'pipelineName' => pipeline_name,
         'callerKey' => RubyFPS.access_key,
@@ -17,7 +17,11 @@ module RubyFPS::Pipelines
       params['signatureMethod'] = 'HmacSHA256'
       params['signature'] = RubyFPS.signature(RubyFPS.pipeline_endpoint, params)
 
-      RubyFPS.pipeline_endpoint + '?' + RubyFPS.query_string(params)
+      params
+    end
+
+    def url(return_url)
+      RubyFPS.pipeline_endpoint + '?' + RubyFPS.query_string(to_params(return_url))
     end
 
     protected

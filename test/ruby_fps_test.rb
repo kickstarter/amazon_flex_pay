@@ -65,4 +65,26 @@ class RubyFPSTest < RubyFPS::Test
     assert_equal 'HmacSHA256',                                   params['SignatureMethod']
     assert_equal 2,                                              params['SignatureVersion']
   end
+
+  # pipeline basics
+
+  class TestPipeline < RubyFPS::Pipelines::Base
+    attr_accessor :foo
+  end
+
+  should "add necessary fields and sign pipeline urls" do
+    Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
+
+    pipeline = TestPipeline.new(:foo => 'bar')
+    params = pipeline.to_params('http://example.com/return')
+
+    assert_equal 'TestPipeline', params['pipelineName']
+    assert_equal 'foo', params['callerKey']
+    assert_equal '2009-01-09', params['version']
+    assert_equal 'http://example.com/return', params['returnURL']
+
+    assert_equal 2,                                              params['signatureVersion']
+    assert_equal 'HmacSHA256',                                   params['signatureMethod']
+    assert_equal 'OuUJQqFBJhezmcWOAhDGcsD/6OXpOLVlcbF3XMIZO3U=', params['signature']
+  end
 end
