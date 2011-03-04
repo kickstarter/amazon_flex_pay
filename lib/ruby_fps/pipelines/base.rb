@@ -26,11 +26,8 @@ module RubyFPS::Pipelines
 
     protected
 
-    def to_hash
-      attribute_names.inject({}) do |hash, name|
-        val  = send(name)
-        hash.merge(name.camelcase(:lower) => val)
-      end
+    def format_key(key)
+      key.camelcase(:lower)
     end
 
     def pipeline_name

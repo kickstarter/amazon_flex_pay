@@ -15,7 +15,7 @@ module RubyFPS::API
         'Action' => action_name,
         'AWSAccessKeyId' => RubyFPS.access_key,
         'Version' => RubyFPS::API_VERSION,
-        'Timestamp' => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+        'Timestamp' => format_value(Time.now)
       )
 
       params['SignatureVersion'] = 2
@@ -42,13 +42,6 @@ module RubyFPS::API
     end
 
     protected
-
-    def to_hash
-      attribute_names.inject({}) do |hash, name|
-        val  = send(name)
-        hash.merge(name.camelcase => val)
-      end
-    end
 
     def action_name
       self.class.to_s.split('::').last
