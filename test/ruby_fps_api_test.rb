@@ -104,10 +104,12 @@ class RubyFPSTest < RubyFPS::Test
   end
 
   should "construct a Settle request" do
-    RubyFPS::API::Settle.any_instance.expects(:submit)
+    request = nil
     assert_nothing_raised do
-      RubyFPS.settle('txid', {:transaction_amount => '3.14'})
+      request = RubyFPS::API::Settle.new(:reserve_transaction_id => 'txid', :transaction_amount => {:currency_code => 'USD', :value => '3.14'})
     end
+    assert request.transaction_amount.currency_code = 'USD'
+    assert request.transaction_amount.value = '3.14'
   end
 
   should "parse a Settle response" do
