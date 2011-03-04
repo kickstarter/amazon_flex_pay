@@ -1,5 +1,18 @@
 module RubyFPS
   class Model
+    def self.enumerated(field, source = nil)
+      source ||= field
+      class_eval <<-END
+        def #{field}=(val)
+          options = RubyFPS::Enumerations::#{source.to_s.camelcase}
+          unless options.include?(val)
+            raise ArgumentError.new("\#{val} is not an allowed option (\#{options.join(', ')})")
+          end
+          @#{field} = val
+        end
+      END
+    end
+
     def initialize(hash)
       assign(hash)
     end
