@@ -11,8 +11,16 @@ require 'ruby_fps/api/verify_signature'
 
 module RubyFPS
   class << self
-    def get_transaction_status(id)
-      submit(:get_transaction_status, :transaction_id => id)
+    def cancel(transaction_id, options = {})
+      submit(:cancel, options.merge(:transaction_id => transaction_id))
+    end
+
+    def cancel_token(token_id, options = {})
+      submit(:cancel_token, options.merge(:token_id => token_id))
+    end
+
+    def get_recipient_verification_status(recipient_token_id)
+      submit(:get_recipient_verification_status, :recipient_token_id => recipient_token_id)
     end
 
     def get_token_by_caller_reference(ref)
@@ -23,10 +31,14 @@ module RubyFPS
       submit(:get_token_by_caller, :token_id => id)
     end
 
-    def get_recipient_verification_status(recipient_token_id)
-      submit(:get_recipient_verification_status, :recipient_token_id => recipient_token_id)
+    def get_transaction_status(id)
+      submit(:get_transaction_status, :transaction_id => id)
     end
-    
+
+    def settle(transaction_id, options = {})
+      submit(:settle, options.merge(:reserve_transaction_id => transaction_id))
+    end
+
     # This is how you verify IPNs and pipeline responses.
     # Pass the entire request object.
     def verify_request(request)
@@ -40,18 +52,6 @@ module RubyFPS
 
     def verify_signature(url, params)
       submit(:verify_signature, :url_end_point => url, :http_parameters => params)
-    end
-    
-    def cancel(transaction_id, options = {})
-      submit(:cancel, options.merge(:transaction_id => transaction_id))
-    end
-    
-    def cancel_token(token_id, options = {})
-      submit(:cancel_token, options.merge(:token_id => token_id))
-    end
-    
-    def settle(transaction_id, options = {})
-      submit(:settle, options.merge(:reserve_transaction_id => transaction_id))
     end
 
     protected
