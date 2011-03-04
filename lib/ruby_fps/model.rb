@@ -13,6 +13,15 @@ module RubyFPS
       END
     end
 
+    def self.complex(field, data_type = nil)
+      data_type ||= field
+      class_eval <<-END
+        def #{field}=(hash)
+          @#{field} = RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)
+        end
+      END
+    end
+
     def initialize(hash)
       assign(hash)
     end

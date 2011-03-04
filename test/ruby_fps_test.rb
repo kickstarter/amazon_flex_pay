@@ -43,10 +43,7 @@ class RubyFPSTest < RubyFPS::Test
 
   class TestRequest < RubyFPS::API::Base
     attr_accessor :foo, :amount
-
-    def amount=(hash)
-      @amount = RubyFPS::DataTypes::Amount.new(hash)
-    end
+    complex :amount
 
     class Response; end
   end
