@@ -6,6 +6,9 @@ require 'ruby_fps/api/cancel_token'
 require 'ruby_fps/api/get_recipient_verification_status'
 require 'ruby_fps/api/get_token_by_caller'
 require 'ruby_fps/api/get_transaction_status'
+require 'ruby_fps/api/pay'
+require 'ruby_fps/api/refund'
+require 'ruby_fps/api/reserve'
 require 'ruby_fps/api/settle'
 require 'ruby_fps/api/verify_signature'
 
@@ -33,6 +36,26 @@ module RubyFPS
 
     def get_transaction_status(id)
       submit(:get_transaction_status, :transaction_id => id)
+    end
+
+    def pay(value, currency, sender_token_id, caller_reference, options = {})
+      submit(:pay, options.merge(
+        :transaction_amount => {:value => value, :currency_code => currency},
+        :sender_token_id => sender_token_id,
+        :caller_reference => caller_reference
+      ))
+    end
+
+    def reserve(value, currency, sender_token_id, caller_reference, options = {})
+      submit(:reserve, options.merge(
+        :transaction_amount => {:value => value, :currency_code => currency},
+        :sender_token_id => sender_token_id,
+        :caller_reference => caller_reference
+      ))
+    end
+
+    def refund(transaction_id, caller_reference, options = {})
+      submit(:refund, options.merge(:transaction_id => transaction_id, :caller_reference => caller_reference))
     end
 
     def settle(transaction_id, options = {})

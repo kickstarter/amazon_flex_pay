@@ -103,13 +103,67 @@ class RubyFPSTest < RubyFPS::Test
     assert_equal 'Success', response.transaction_status
   end
 
+  should "construct a Pay request" do
+    request = nil
+    assert_nothing_raised do
+      request = RubyFPS::API::Pay.new(:transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid')
+    end
+    assert_equal '1.00', request.transaction_amount.value
+  end
+
+  should "parse a Pay response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::Pay::Response.from_xml(reserve_response)
+    end
+    assert response.request_id
+    assert response.transaction_id
+    assert response.transaction_status
+  end
+
+  should "construct a Refund request" do
+    request = nil
+    assert_nothing_raised do
+      request = RubyFPS::API::Refund.new(:transaction_id => 'txid', :caller_reference => 'myid', :refund_amount => {:currency_code => 'USD', :value => '1.00'})
+    end
+    assert_equal '1.00', request.refund_amount.value
+  end
+
+  should "parse a Refund response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::Refund::Response.from_xml(refund_response)
+    end
+    assert response.request_id
+    assert response.transaction_id
+    assert response.transaction_status
+  end
+
+  should "construct a Reserve request" do
+    request = nil
+    assert_nothing_raised do
+      request = RubyFPS::API::Reserve.new(:sender_token_id => 'token', :transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid', :descriptor_policy => {:c_s_owner => 'Caller', :soft_descriptor_type => 'Static'})
+    end
+    assert_equal 'Caller', request.descriptor_policy.c_s_owner
+  end
+
+  should "parse a Reserve response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::Reserve::Response.from_xml(reserve_response)
+    end
+    assert response.request_id
+    assert response.transaction_id
+    assert response.transaction_status
+  end
+
   should "construct a Settle request" do
     request = nil
     assert_nothing_raised do
       request = RubyFPS::API::Settle.new(:reserve_transaction_id => 'txid', :transaction_amount => {:currency_code => 'USD', :value => '3.14'})
     end
-    assert request.transaction_amount.currency_code = 'USD'
-    assert request.transaction_amount.value = '3.14'
+    assert_equal 'USD', request.transaction_amount.currency_code
+    assert_equal '3.14', request.transaction_amount.value
   end
 
   should "parse a Settle response" do

@@ -23,8 +23,8 @@ module RubyFPS::DataTypes
   end
 
   class DescriptorPolicy < RubyFPS::Model
-    attribute :c_s_owner, :type => :c_s_owner # TODO: cleanup
-    attribute :soft_descriptor_type, :type => :soft_descriptor_type
+    attribute :c_s_owner, :enumeration => :c_s_owner # TODO: cleanup
+    attribute :soft_descriptor_type, :enumeration => :soft_descriptor_type
   end
 
   class OutstandingDebtBalance < RubyFPS::Model
