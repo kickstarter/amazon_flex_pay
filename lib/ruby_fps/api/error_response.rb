@@ -4,7 +4,7 @@ module RubyFPS::API
       new(MultiXml.parse(xml)['Response'])
     end
 
-    attributes :request_id
+    attribute :request_id
 
     attr_reader :errors
     def errors=(val)
@@ -12,7 +12,8 @@ module RubyFPS::API
     end
 
     class Error < RubyFPS::Model
-      attributes :code, :message
+      attribute :code
+      attribute :message
     end
   end
 end

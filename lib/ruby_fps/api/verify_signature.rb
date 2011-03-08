@@ -1,9 +1,10 @@
 module RubyFPS::API
   class VerifySignature < Base
-    attributes :url_end_point, :http_parameters
+    attribute :url_end_point
+    attribute :http_parameters
 
     class Response < BaseResponse
-      attributes :verification_status
+      attribute :verification_status
 
       def verified?
         verification_status == 'Success'

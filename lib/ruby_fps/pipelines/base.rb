@@ -2,8 +2,10 @@ module RubyFPS::Pipelines
   # Base model for pipelines.
   # Note that pipelines use camelcase(:lower) for all parameters, where API requests use full camelcase.
   class Base < RubyFPS::Model
-    attributes :caller_reference # required
-    attributes :cobranding_style, :cobranding_url, :website_description
+    attribute :caller_reference # required
+    attribute :cobranding_style
+    attribute :cobranding_url
+    attribute :website_description
 
     def to_params(return_url)
       params = self.to_hash.merge(

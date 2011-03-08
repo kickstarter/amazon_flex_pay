@@ -42,7 +42,7 @@ class RubyFPSTest < RubyFPS::Test
   # api basics
 
   class TestRequest < RubyFPS::API::Base
-    attributes :foo, :amount
+    attribute :foo
     attribute :amount, :type => :amount
 
     class Response; end

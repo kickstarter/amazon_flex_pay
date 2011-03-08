@@ -1,6 +1,7 @@
 module RubyFPS::API
   class Cancel < Base
-    attributes :transaction_id, :description
+    attribute :transaction_id
+    attribute :description
 
     class Response < BaseResponse
       attribute :transaction_id

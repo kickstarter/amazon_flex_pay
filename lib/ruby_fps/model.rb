@@ -1,10 +1,6 @@
 module RubyFPS
   class Model
     class << self
-      def attributes(*attrs)
-        attrs.each{|attr| attribute(attr)}
-      end
-
       def attribute(attr, options = {})
         @attributes ||= []
         @attributes << attr.to_s

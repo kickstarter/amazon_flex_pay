@@ -26,7 +26,7 @@ module RubyFPS::API
     end
 
     class BaseResponse < RubyFPS::Model
-      attributes :request_id
+      attribute :request_id
 
       def self.from_xml(xml)
         hash = MultiXml.parse(xml)

@@ -2,6 +2,9 @@ module RubyFPS::Pipelines
   class Recipient < Base
     attribute :recipient_pays_fee # required
     attribute :payment_method, :enumeration => :payment_method
-    attributes :max_fixed_fee, :max_variable_fee, :validity_expiry, :validity_start
+    attribute :max_fixed_fee
+    attribute :max_variable_fee
+    attribute :validity_expiry
+    attribute :validity_start
   end
 end

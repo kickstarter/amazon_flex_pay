@@ -1,6 +1,7 @@
 module RubyFPS::API
   class CancelToken < Base
-    attributes :token_id, :reason_text
+    attribute :token_id
+    attribute :reason_text
 
     class Response < BaseResponse
     end
