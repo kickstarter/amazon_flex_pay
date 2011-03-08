@@ -16,12 +16,12 @@ Note that while the examples are shown using Rails methods, the only Rails requi
 
 1. Construct a single-use pipeline for the user. This is where the user will agree to pay a certain amount to a specific recipient.
 
-     pipeline = RubyFPS::Pipelines::SingleUse.new(:recipient_token => 'RTOKEN', :transaction_amount => '12.99')
+     pipeline = RubyFPS.single_use_pipeline('mypipeline3292', :recipient_token => 'RTOKEN', :transaction_amount => '12.99')
      redirect_to pipeline.url('http://example.com/return')
 
 2. Then on the return page, take the sender token and run a Pay request:
 
-     response = RubyFPS.pay('12.99', 'USD', 'STOKEN', 'myrequest5')
+     response = RubyFPS.pay('12.99', 'USD', 'STOKEN', 'myrequest3292')
      if response.requested?
        flash[:notice] = "Thanks! Your payment is processing."
      else
