@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('rest-client', '~>1.6.1')
   s.add_dependency('multi_xml', '~>0.2.0')
-  s.add_dependency('active_support', '~>2.3.11')
+  s.add_dependency('activesupport', '~>2.3.11')
 
   s.add_development_dependency('mocha')
 end
