@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/test_helper'
 class RubyFPSTest < RubyFPS::Test
   include ResponseSamples
 
+  ## Cancel
+
   should "construct a Cancel request" do
     RubyFPS::API::Cancel.any_instance.expects(:submit)
     assert_nothing_raised do
@@ -20,6 +22,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.transaction_status
   end
 
+  ## CancelToken
+
   should "construct a CancelToken request" do
     RubyFPS::API::CancelToken.any_instance.expects(:submit)
     assert_nothing_raised do
@@ -35,6 +39,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.request_id
   end
 
+  ## errors
+
   should "parse error responses" do
     response = nil
     assert_nothing_raised do
@@ -45,6 +51,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.errors.first.code
     assert response.errors.first.message
   end
+
+  ## GetRecipientVerificationStatus
 
   should "construct a GetRecipientVerificationStatus request" do
     RubyFPS::API::GetRecipientVerificationStatus.any_instance.expects(:submit)
@@ -61,6 +69,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.request_id
     assert response.recipient_verification_status
   end
+
+  ## GetTokenByCaller
 
   should "construct a GetTokenByCaller request by reference" do
     RubyFPS::API::GetTokenByCaller.any_instance.expects(:submit)
@@ -86,6 +96,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.token.token_status
   end
 
+  ## GetTransactionStatus
+
   should "construct a GetTransactionStatus request" do
     RubyFPS::API::GetTransactionStatus.any_instance.expects(:submit)
     assert_nothing_raised do
@@ -102,6 +114,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.transaction_id
     assert_equal 'Success', response.transaction_status
   end
+
+  ## Pay
 
   should "construct a Pay request" do
     request = nil
@@ -121,6 +135,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.transaction_status
   end
 
+  ## Refund
+
   should "construct a Refund request" do
     request = nil
     assert_nothing_raised do
@@ -138,6 +154,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.transaction_id
     assert response.transaction_status
   end
+
+  ## Reserve
 
   should "construct a Reserve request" do
     request = nil
@@ -157,6 +175,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.transaction_status
   end
 
+  ## Settle
+
   should "construct a Settle request" do
     request = nil
     assert_nothing_raised do
@@ -175,6 +195,8 @@ class RubyFPSTest < RubyFPS::Test
     assert response.transaction_id
     assert response.transaction_status
   end
+
+  ## VerifySignature
 
   should "construct a VerifySignature request" do
     RubyFPS::API::VerifySignature.any_instance.expects(:submit)
