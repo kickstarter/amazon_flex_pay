@@ -1,7 +1,7 @@
 # Complex Data Types pulled from the documentation
 module RubyFPS::DataTypes
   class AccountBalance < RubyFPS::Model # moved from Enumerations
-    attribute :available_balances, :type => :amount
+    attribute :available_balances, :type => :available_balances
     attribute :pending_in_balance, :type => :amount
     attribute :pending_out_balance, :type => :amount
     attribute :total_balance, :type => :amount
@@ -70,10 +70,9 @@ module RubyFPS::DataTypes
     attribute :last_reset_amount, :type => :amount
     attribute :count
     attribute :last_reset_count
-    attribute :last_reset_time_stamp
+    attribute :last_reset_timestamp
   end
 
-  # NOTE: where is this used? GetTransaction returns a TransactionDetail
   class Transaction < RubyFPS::Model
     attribute :balance, :type => :amount
     attribute :caller_name
@@ -92,7 +91,7 @@ module RubyFPS::DataTypes
     attribute :status_message
     attribute :transaction_amount, :type => :amount
     attribute :transaction_id
-    attribute :transaction_part, :type => :transaction_part
+    attribute :transaction_part, :collection => :transaction_part
     attribute :transaction_status, :enumeration => :transaction_status
   end
 

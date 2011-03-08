@@ -12,6 +12,14 @@ module RubyFPS
       submit(:cancel_token, options.merge(:token_id => token_id))
     end
 
+    def get_account_activity(start_date, end_date, options = {})
+      submit(:get_account_activity, options.merge(:start_date => start_date, :end_date => end_date))
+    end
+
+    def get_account_balance
+      submit(:get_account_balance)
+    end
+
     def get_recipient_verification_status(recipient_token_id)
       submit(:get_recipient_verification_status, :recipient_token_id => recipient_token_id)
     end
@@ -22,6 +30,14 @@ module RubyFPS
 
     def get_token_by_id(id)
       submit(:get_token_by_caller, :token_id => id)
+    end
+
+    def get_token_usage(id)
+      submit(:get_token_usage, :token_id => id)
+    end
+
+    def get_tokens(options = {})
+      submit(:get_tokens, options)
     end
 
     def get_transaction(id)
@@ -73,8 +89,8 @@ module RubyFPS
 
     protected
 
-    def submit(action, args)
-      RubyFPS::API.const_get(action.to_s.camelcase).new(args).submit
+    def submit(action, *args)
+      RubyFPS::API.const_get(action.to_s.camelcase).new(*args).submit
     end
   end
 end

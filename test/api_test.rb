@@ -52,6 +52,44 @@ class RubyFPSTest < RubyFPS::Test
     assert response.errors.first.message
   end
 
+  ## GetAccountActivity
+
+  should "construct a GetAccountActivity request" do
+    RubyFPS::API::GetAccountActivity.any_instance.expects(:submit)
+    since = Time.now - 60*60*24 # 1.day
+    to    = Time.now
+    assert_nothing_raised do
+      RubyFPS.get_account_activity(since, to)
+    end
+  end
+
+  should "parse a GetAccountActivity response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::GetAccountActivity::Response.from_xml(get_account_activity_response)
+    end
+    assert response.request_id
+    assert_equal 5, response.transactions.count
+  end
+
+  ## GetAccountBalance
+
+  should "construct a GetAccountBalance request" do
+    RubyFPS::API::GetAccountBalance.any_instance.expects(:submit)
+    assert_nothing_raised do
+      RubyFPS.get_account_balance
+    end
+  end
+
+  should "parse a GetAccountBalance response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::GetAccountBalance::Response.from_xml(get_account_balance_response)
+    end
+    assert response.request_id
+    assert_equal '7.400000', response.account_balance.total_balance.value
+  end
+
   ## GetRecipientVerificationStatus
 
   should "construct a GetRecipientVerificationStatus request" do
@@ -94,6 +132,42 @@ class RubyFPSTest < RubyFPS::Test
     assert response.request_id
     assert response.token.token_id
     assert response.token.token_status
+  end
+  
+  ## GetTokenUsage
+  
+  should "construct a GetTokenUsage request" do
+    RubyFPS::API::GetTokenUsage.any_instance.expects(:submit)
+    assert_nothing_raised do
+      RubyFPS.get_token_usage('token')
+    end
+  end
+
+  should "parse a GetTokenUsage response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::GetTokenUsage::Response.from_xml(get_token_usage_response)
+    end
+    assert 2, response.token_usage_limits.count
+    assert_equal '10.000000', response.token_usage_limits.first.amount.value
+    assert_equal '1', response.token_usage_limits.last.count
+  end
+  
+  ## GetTokens
+
+  should "construct a GetTokens request" do
+    RubyFPS::API::GetTokens.any_instance.expects(:submit)
+    assert_nothing_raised do
+      RubyFPS.get_tokens
+    end
+  end
+
+  should "parse a GetTokens response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::GetTokens::Response.from_xml(get_tokens_response)
+    end
+    assert 1, response.tokens.count
   end
 
   ## GetTransaction

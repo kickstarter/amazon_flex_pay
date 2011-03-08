@@ -50,13 +50,13 @@ module RubyFPS
       def collection_attribute(attr, data_type = nil)
         class_eval <<-END
           def #{attr}=(array)
-            @#{attr} = array.map{|hash| RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)}
+            @#{attr} = [array].flatten.map{|hash| RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)}
           end
         END
       end
     end
 
-    def initialize(hash)
+    def initialize(hash = {})
       assign(hash)
     end
 
