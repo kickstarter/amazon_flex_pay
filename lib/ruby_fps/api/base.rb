@@ -12,6 +12,11 @@ module RubyFPS::API #:nodoc:
       end
     end
 
+    # Check response.error? to determine whether it's an ErrorResponse or not.
+    def error?
+      false
+    end
+
     # Converts the API request object into parameters and signs them.
     def to_params
       params = self.to_hash.merge(

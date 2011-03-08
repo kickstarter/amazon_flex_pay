@@ -22,20 +22,20 @@ Note that while the examples are shown using Rails methods, the only Rails requi
 2. Then on the return page, take the sender token and run a Pay request:
 
      response = RubyFPS.pay('12.99', 'USD', 'STOKEN', 'myrequest3292')
-     if response.requested?
-       flash[:notice] = "Thanks! Your payment is processing."
-     else
+     if response.error?
        flash[:error] = "Sorry, something went wrong."
        response.errors.each do |error|
          # notify yourself about error.code and error.message
        end
+     else
+       flash[:notice] = "Thanks! Your payment is processing."
      end
      redirect_to product_path
 
 3. Then wait for a IPN to your registered listening URL and check that it's successful.
 
-== DOCUMENTATION
+== LEARN MORE
 
-See RubyFPS for the implemented API methods.
+All methods required for integrating API calls and Pipeline requests are found in the RubyFPS module.
 
 Copyright (c) 2011 Lance Ivy, released under the MIT license.

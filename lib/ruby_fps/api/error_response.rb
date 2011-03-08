@@ -5,6 +5,11 @@ module RubyFPS::API #:nodoc:
       new(MultiXml.parse(xml)['Response'])
     end
 
+    # Check response.error? to determine whether Amazon accepted the request.
+    def error?
+      true
+    end
+
     attribute :request_id
 
     attr_reader :errors
