@@ -81,6 +81,59 @@ module ResponseSamples
     END
   end
 
+  def get_transaction_response
+    <<-END
+    <GetTransactionResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+      <GetTransactionResult>
+        <Transaction>
+          <TransactionId>14GK6BGKA7U6OU6SUTNLBI5SBBV9PGDJ6UL</TransactionId>
+          <CallerReference>CallerReference02</CallerReference>
+          <CallerDescription>MyWish</CallerDescription>
+          <DateReceived>2009-10-05T22:50:08.010-07:00</DateReceived>
+          <DateCompleted>2009-10-05T22:50:09.086-07:00</DateCompleted>
+          <TransactionAmount>
+            <CurrencyCode>USD</CurrencyCode>
+            <Value>1.000000</Value>
+          </TransactionAmount>
+          <FPSFees>
+            <CurrencyCode>USD</CurrencyCode>
+            <Value>0.100000</Value>
+          </FPSFees>
+          <FPSFeesPaidBy>Recipient</FPSFeesPaidBy>
+          <SenderTokenId>
+            553ILMLCG6Z8J431H7BX3UMN3FFQU8VSNTSRNCTAASDJNX66LNZLKSZU3PI7TXIH
+          </SenderTokenId>
+          <FPSOperation>Pay</FPSOperation>
+          <PaymentMethod>CC</PaymentMethod>
+          <TransactionStatus>Success</TransactionStatus>
+          <StatusCode>Success</StatusCode>
+          <StatusMessage>
+            The transaction was successful and the payment instrument was charged.
+          </StatusMessage>
+          <SenderName>Test Business</SenderName>
+          <SenderEmail>new_premium@amazon.com</SenderEmail>
+          <CallerName>Test Business</CallerName>
+          <RecipientName>Test Business</RecipientName>
+          <RecipientEmail>test-caller@amazon.com</RecipientEmail>
+          <StatusHistory>
+            <Date>2009-10-05T22:50:08.092-07:00</Date>
+            <TransactionStatus>Pending</TransactionStatus>
+            <StatusCode>PendingNetworkResponse</StatusCode>
+          </StatusHistory>
+          <StatusHistory>
+            <Date>2009-10-05T22:50:09.086-07:00</Date>
+            <TransactionStatus>Success</TransactionStatus>
+            <StatusCode>Success</StatusCode>
+          </StatusHistory>
+        </Transaction>
+      </GetTransactionResult>
+      <ResponseMetadata>
+        <RequestId>0702960e-8221-4e04-9413-ca7d010d3b06:0</RequestId>
+      </ResponseMetadata>
+    </GetTransactionResponse>
+    END
+  end
+
   def get_transaction_status_response
     <<-END
     <GetTransactionStatusResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">

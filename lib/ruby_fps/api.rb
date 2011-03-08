@@ -5,6 +5,7 @@ require 'ruby_fps/api/cancel'
 require 'ruby_fps/api/cancel_token'
 require 'ruby_fps/api/get_recipient_verification_status'
 require 'ruby_fps/api/get_token_by_caller'
+require 'ruby_fps/api/get_transaction'
 require 'ruby_fps/api/get_transaction_status'
 require 'ruby_fps/api/pay'
 require 'ruby_fps/api/refund'
@@ -32,6 +33,10 @@ module RubyFPS
 
     def get_token_by_id(id)
       submit(:get_token_by_caller, :token_id => id)
+    end
+
+    def get_transaction(id)
+      submit(:get_transaction, :transaction_id => id)
     end
 
     def get_transaction_status(id)

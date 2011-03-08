@@ -10,6 +10,8 @@ module RubyFPS
           enumerated_attribute(attr, options[:enumeration])
         elsif options[:type]
           complex_attribute(attr, options[:type])
+        elsif options[:collection]
+          collection_attribute(attr, options[:collection])
         end
       end
 
@@ -35,6 +37,14 @@ module RubyFPS
         class_eval <<-END
           def #{attr}=(hash)
             @#{attr} = RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)
+          end
+        END
+      end
+
+      def collection_attribute(attr, data_type = nil)
+        class_eval <<-END
+          def #{attr}=(array)
+            @#{attr} = array.map{|hash| RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)}
           end
         END
       end

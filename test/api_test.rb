@@ -96,6 +96,25 @@ class RubyFPSTest < RubyFPS::Test
     assert response.token.token_status
   end
 
+  ## GetTransaction
+
+  should "construct a GetTransaction request" do
+    RubyFPS::API::GetTransaction.any_instance.expects(:submit)
+    assert_nothing_raised do
+      RubyFPS.get_transaction('txid')
+    end
+  end
+
+  should "parse a GetTransaction response" do
+    response = nil
+    assert_nothing_raised do
+      response = RubyFPS::API::GetTransaction::Response.from_xml(get_transaction_response)
+    end
+    assert response.request_id
+    assert response.transaction.caller_reference
+    assert response.transaction.payment_method
+  end
+
   ## GetTransactionStatus
 
   should "construct a GetTransactionStatus request" do
