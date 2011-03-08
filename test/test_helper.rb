@@ -6,11 +6,11 @@ require 'mocha'
 # load the gem
 root = File.dirname(__FILE__) + '/../lib'
 $LOAD_PATH.unshift root
-require root + '/ruby_fps'
+require root + '/amazon_flex_pay'
 
 require 'response_samples'
 
-class RubyFPS::Test < Test::Unit::TestCase
+class AmazonFlexPay::Test < Test::Unit::TestCase
   def default_test; end # quiet Test::Unit
 
   def self.should(name, &block) # very simple syntax
@@ -18,5 +18,5 @@ class RubyFPS::Test < Test::Unit::TestCase
   end
 end
 
-RubyFPS.access_key = 'foo'
-RubyFPS.secret_key = 'bar'
+AmazonFlexPay.access_key = 'foo'
+AmazonFlexPay.secret_key = 'bar'

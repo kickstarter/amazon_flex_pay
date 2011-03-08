@@ -1,14 +1,14 @@
-= RubyFPS
+= AmazonFlexPay
 
 Library for Amazon's Flexible Payment Service.
 
 == CONFIGURE
 
-In config/initializers/ruby_fps.rb, do the following:
+In config/initializers/amazon_flex_pay.rb, do the following:
 
-  RubyFPS.access_key = 'your access key'
-  RubyFPS.secret_key = 'your secret key'
-  RubyFPS.go_live! # if you're done with the sandbox
+  AmazonFlexPay.access_key = 'your access key'
+  AmazonFlexPay.secret_key = 'your secret key'
+  AmazonFlexPay.go_live! # if you're done with the sandbox
 
 == EXAMPLES
 
@@ -16,12 +16,12 @@ Note that while the examples are shown using Rails methods, the only Rails requi
 
 1. Construct a single-use pipeline for the user. This is where the user will agree to pay a certain amount to a specific recipient.
 
-     pipeline = RubyFPS.single_use_pipeline('mypipeline3292', :recipient_token => 'RTOKEN', :transaction_amount => '12.99')
+     pipeline = AmazonFlexPay.single_use_pipeline('mypipeline3292', :recipient_token => 'RTOKEN', :transaction_amount => '12.99')
      redirect_to pipeline.url('http://example.com/return')
 
 2. Then on the return page, take the sender token and run a Pay request:
 
-     response = RubyFPS.pay('12.99', 'USD', 'STOKEN', 'myrequest3292')
+     response = AmazonFlexPay.pay('12.99', 'USD', 'STOKEN', 'myrequest3292')
      if response.error?
        flash[:error] = "Sorry, something went wrong."
        response.errors.each do |error|
@@ -36,6 +36,6 @@ Note that while the examples are shown using Rails methods, the only Rails requi
 
 == LEARN MORE
 
-All methods required for integrating API calls and Pipeline requests are found in the RubyFPS module.
+All methods required for integrating API calls and Pipeline requests are found in the AmazonFlexPay module.
 
 Copyright (c) 2011 Lance Ivy, released under the MIT license.
