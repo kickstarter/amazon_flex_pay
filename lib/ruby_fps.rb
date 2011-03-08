@@ -18,7 +18,7 @@ require 'ruby_fps/pipelines'
 RestClient.log = 'stdout'
 
 module RubyFPS
-  VERSION = '1.0.pre'
+  VERSION = '0.9'
   API_VERSION = '2010-08-28'
   PIPELINE_VERSION = '2009-01-09'
 
