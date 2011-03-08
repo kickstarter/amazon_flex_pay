@@ -3,15 +3,21 @@ module RubyFPS
     class << self
       def attribute(attr, options = {})
         @attributes ||= []
-        @attributes << attr.to_s
-        attr_accessor attr
+        @attributes << attr.to_s.camelcase
+        name = attr.to_s.underscore
 
+        # reader
+        attr_reader name
+
+        # writer
         if options[:enumeration]
-          enumerated_attribute(attr, options[:enumeration])
+          enumerated_attribute(name, options[:enumeration])
         elsif options[:type]
-          complex_attribute(attr, options[:type])
+          complex_attribute(name, options[:type])
         elsif options[:collection]
-          collection_attribute(attr, options[:collection])
+          collection_attribute(name, options[:collection])
+        else
+          attr_writer name
         end
       end
 
@@ -58,8 +64,8 @@ module RubyFPS
 
     def to_hash
       self.class.attribute_names.inject({}) do |hash, name|
-        val = send(name)
-        hash.merge(format_key(name) => val.is_a?(RubyFPS::Model) ? val.to_hash : format_value(send(name)))
+        val = send(name.underscore)
+        hash.merge(format_key(name) => val.is_a?(RubyFPS::Model) ? val.to_hash : format_value(val))
       end
     end
 

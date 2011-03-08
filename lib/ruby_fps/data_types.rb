@@ -23,7 +23,7 @@ module RubyFPS::DataTypes
   end
 
   class DescriptorPolicy < RubyFPS::Model
-    attribute :c_s_owner, :enumeration => :c_s_owner # TODO: cleanup
+    attribute :'CSOwner', :enumeration => :cs_owner
     attribute :soft_descriptor_type, :enumeration => :soft_descriptor_type
   end
 
@@ -80,8 +80,8 @@ module RubyFPS::DataTypes
     attribute :caller_transaction_date
     attribute :date_completed
     attribute :date_received
-    attribute :fps_fees, :type => :amount
-    attribute :fps_operation, :enumeration => :f_p_s_operation # TODO: cleanup
+    attribute :'FPSFees', :type => :amount
+    attribute :'FPSOperation', :enumeration => :fps_operation
     attribute :original_transaction_id
     attribute :payment_method, :enumeration => :payment_method
     attribute :recipient_name
@@ -103,9 +103,9 @@ module RubyFPS::DataTypes
     attribute :credit_instrument_id
     attribute :date_received
     attribute :date_completed
-    attribute :fps_fees, :type => :amount
-    attribute :fps_fees_paid_by, :enumeration => :transactional_role
-    attribute :fps_operation, :enumeration => :f_p_s_operation # TODO: cleanup
+    attribute :'FPSFees', :type => :amount
+    attribute :'FPSFeesPaidBy', :enumeration => :transactional_role
+    attribute :'FPSOperation', :enumeration => :fps_operation
     attribute :market_place_fees, :type => :amount
     attribute :payment_method, :enumeration => :payment_method
     attribute :prepaid_instrument_id

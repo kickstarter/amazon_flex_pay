@@ -179,9 +179,10 @@ class RubyFPSTest < RubyFPS::Test
   should "construct a Reserve request" do
     request = nil
     assert_nothing_raised do
-      request = RubyFPS::API::Reserve.new(:sender_token_id => 'token', :transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid', :descriptor_policy => {:c_s_owner => 'Caller', :soft_descriptor_type => 'Static'})
+      request = RubyFPS::API::Reserve.new(:sender_token_id => 'token', :transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid', :descriptor_policy => {:cs_owner => 'Caller', :soft_descriptor_type => 'Static'})
     end
-    assert_equal 'Caller', request.descriptor_policy.c_s_owner
+    assert_equal 'Caller', request.descriptor_policy.cs_owner
+    assert request.to_params['DescriptorPolicy'].has_key?('CSOwner') # funky casing
   end
 
   should "parse a Reserve response" do

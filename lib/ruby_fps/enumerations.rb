@@ -2,9 +2,9 @@
 module RubyFPS::Enumerations
   AmountType = %w(Exact Maximum Minimum) # undocumented
   ChargeFeeTo = %w(Caller Recipient)
-  CSOwner = %w(Caller Recipient) # undocumented
+  CsOwner = %w(Caller Recipient) # undocumented
   CurrencyCode = %w(USD)
-  FPSOperation = %w(Pay Refund Settle SettleDebt WriteOffDebt FundPrepaid Reserve)
+  FpsOperation = %w(Pay Refund Settle SettleDebt WriteOffDebt FundPrepaid Reserve)
   InstrumentId = %w(InstrumentId) # whaaaaaaat? should go in DataTypes probably, but it actually seems like a simple field.
   InstrumentStatus = %w(Active All Cancelled)
   MarketplaceRefundPolicy = %w(MarketplaceTxnOnly MasterAndMarketplaceTxn MasterTxnOnly) # moved from DataTypes

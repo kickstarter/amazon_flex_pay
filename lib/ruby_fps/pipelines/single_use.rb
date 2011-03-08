@@ -9,8 +9,8 @@ module RubyFPS::Pipelines
     attribute :discount
     attribute :tax
     attribute :address_name
-    attribute :address_line_1
-    attribute :address_line_2
+    attribute :address_line1
+    attribute :address_line2
     attribute :city
     attribute :state
     attribute :zip
