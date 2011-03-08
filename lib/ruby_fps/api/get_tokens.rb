@@ -1,10 +1,10 @@
-module RubyFPS::API
-  class GetTokens < Base
+module RubyFPS::API #:nodoc:
+  class GetTokens < Base #:nodoc:
     attribute :caller_reference
     attribute :token_status
     attribute :token_type
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :token, :collection => :token
 
       alias_method :tokens, :token

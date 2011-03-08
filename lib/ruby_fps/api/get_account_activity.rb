@@ -1,5 +1,5 @@
-module RubyFPS::API
-  class GetAccountActivity < Base
+module RubyFPS::API #:nodoc:
+  class GetAccountActivity < Base #:nodoc:
     attribute :start_date # required
     attribute :end_date
     attribute :'FPSOperation', :enumeration => :fps_operation
@@ -10,7 +10,7 @@ module RubyFPS::API
     attribute :sort_order_by_date, :enumeration => :sort_order_by_date
     attribute :status, :type => :transaction_status
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :batch_size
       attribute :start_time_for_next_transaction
       attribute :transaction, :collection => :transaction

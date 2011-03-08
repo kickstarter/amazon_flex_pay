@@ -1,5 +1,6 @@
 module RubyFPS
   class << self
+    # Returns a signature for the given URL and parameters.
     def signature(endpoint, params)
       uri = URI.parse(endpoint)
 
@@ -19,7 +20,7 @@ module RubyFPS
     #   RubyFPS.query_string(:foo => {:hello => 'world'})
     #   => "foo.hello=world"
     #
-    def query_string(params, prefix = nil)
+    def query_string(params, prefix = nil) #:nodoc:
       prefix = "#{prefix}." if prefix
       params.keys.sort { |a, b| a.to_s <=> b.to_s }.collect do |key|
         case val = params[key]
@@ -31,9 +32,9 @@ module RubyFPS
       end.join('&')
     end
 
-    UNSAFE = /[^A-Za-z0-9_.~-]/
+    UNSAFE = /[^A-Za-z0-9_.~-]/ #:nodoc:
     # Amazon is very specific about which chars should be escaped, and which should not.
-    def escape(value)
+    def escape(value) #:nodoc:
       # note that URI.escape(' ') => '%20', and CGI.escape(' ') => '+'
       URI.escape(value.to_s, UNSAFE)
     end

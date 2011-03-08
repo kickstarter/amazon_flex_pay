@@ -1,8 +1,8 @@
-module RubyFPS::API
-  class GetTokenUsage < Base
+module RubyFPS::API #:nodoc:
+  class GetTokenUsage < Base #:nodoc:
     attribute :token_id
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :token_usage_limits, :collection => :token_usage_limit
     end
   end

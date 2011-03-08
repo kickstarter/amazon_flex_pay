@@ -1,4 +1,6 @@
-# pulled from documentation, with some obvious corrections
+# Enumerated sets pulled from documentation, with some obvious corrections.
+#
+# See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/EnumeratedDataTypes.html
 module RubyFPS::Enumerations
   AmountType = %w(Exact Maximum Minimum) # undocumented
   ChargeFeeTo = %w(Caller Recipient)

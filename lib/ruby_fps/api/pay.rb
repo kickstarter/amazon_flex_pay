@@ -1,5 +1,5 @@
-module RubyFPS::API
-  class Pay < Base
+module RubyFPS::API #:nodoc:
+  class Pay < Base #:nodoc:
     attribute :caller_description
     attribute :caller_reference # required
     attribute :charge_fee_to, :enumeration => :charge_fee_to
@@ -12,7 +12,7 @@ module RubyFPS::API
     attribute :transaction_amount, :type => :amount # required
     attribute :transaction_timeout_in_mins
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :transaction_id
       attribute :transaction_status, :enumeration => :transaction_status
     end

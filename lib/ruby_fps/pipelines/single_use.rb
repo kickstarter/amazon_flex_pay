@@ -1,5 +1,5 @@
-module RubyFPS::Pipelines
-  class SingleUse < Base
+module RubyFPS::Pipelines #:nodoc:
+  class SingleUse < Base #:nodoc:
     attribute :recipient_token # required
     attribute :transaction_amount # required
     attribute :currency_code, :enumeration => :currency_code

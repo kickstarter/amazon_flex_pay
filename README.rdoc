@@ -1,0 +1,41 @@
+= RubyFPS
+
+Library for Amazon's Flexible Payment Service.
+
+== CONFIGURE
+
+In config/initializers/ruby_fps.rb, do the following:
+
+  RubyFPS.access_key = 'your access key'
+  RubyFPS.secret_key = 'your secret key'
+  RubyFPS.go_live! # if you're done with the sandbox
+
+== EXAMPLES
+
+Note that while the examples are shown using Rails methods, the only Rails requirement is ActiveSupport's inflector.
+
+1. Construct a single-use pipeline for the user. This is where the user will agree to pay a certain amount to a specific recipient.
+
+     pipeline = RubyFPS::Pipelines::SingleUse.new(:recipient_token => 'RTOKEN', :transaction_amount => '12.99')
+     redirect_to pipeline.url('http://example.com/return')
+
+2. Then on the return page, take the sender token and run a Pay request:
+
+     response = RubyFPS.pay('12.99', 'USD', 'STOKEN', 'myrequest5')
+     if response.requested?
+       flash[:notice] = "Thanks! Your payment is processing."
+     else
+       flash[:error] = "Sorry, something went wrong."
+       response.errors.each do |error|
+         # notify yourself about error.code and error.message
+       end
+     end
+     redirect_to product_path
+
+3. Then wait for a IPN to your registered listening URL and check that it's successful.
+
+== DOCUMENTATION
+
+See RubyFPS for the implemented API methods.
+
+Copyright (c) 2011 Lance Ivy, released under the MIT license.

@@ -1,9 +1,9 @@
-module RubyFPS::API
-  class VerifySignature < Base
+module RubyFPS::API #:nodoc:
+  class VerifySignature < Base #:nodoc:
     attribute :url_end_point
     attribute :http_parameters
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :verification_status
 
       def verified?

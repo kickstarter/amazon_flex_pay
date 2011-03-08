@@ -1,6 +1,33 @@
 module RubyFPS
+  
   class Model
     class << self
+      # Creates an attribute by defining reader and writer methods. These attributes will
+      # also be returned by RubyFPS::Model#to_hash for processing into query strings, etc.
+      #
+      # A few different attribute types are supported.
+      #
+      # === Enumerated Attributes
+      # If Amazon only supports certain values, this will enforce a whitelist. Name one of
+      # the existing enumerations from RubyFPS::Enumerations like this:
+      #
+      #   attribute :status, :enumeration => :token_status
+      #
+      # === Complex Attributes
+      # When the attribute itself has attributes, name one of the existing complex data types
+      # from RubyFPS::DataTypes like this:
+      #
+      #   attribute :final_amount, :type => :amount
+      #
+      # === Arrays of Complex Attributes
+      # When Amazon's XML returns (or has the potential to return) multiples of a complex data
+      # type, declare it like this:
+      #
+      #   attribute :transaction, :collection => :transaction_detail
+      #
+      # And then for convenience and readability, alias a plural method:
+      #
+      #   alias_method :transactions, :transaction
       def attribute(attr, options = {})
         @attributes ||= []
         @attributes << attr.to_s.camelcase
@@ -21,11 +48,12 @@ module RubyFPS
         end
       end
 
+      # The names of all of the attributes of this model, in CamelCase.
       def attribute_names
         @attributes || []
       end
 
-      def enumerated_attribute(attr, source = nil)
+      def enumerated_attribute(attr, source = nil) #:nodoc:
         source ||= attr
         class_eval <<-END
           def #{attr}=(val)
@@ -38,7 +66,7 @@ module RubyFPS
         END
       end
 
-      def complex_attribute(attr, data_type = nil)
+      def complex_attribute(attr, data_type = nil) #:nodoc:
         data_type ||= attr
         class_eval <<-END
           def #{attr}=(hash)
@@ -47,7 +75,7 @@ module RubyFPS
         END
       end
 
-      def collection_attribute(attr, data_type = nil)
+      def collection_attribute(attr, data_type = nil) #:nodoc:
         class_eval <<-END
           def #{attr}=(array)
             @#{attr} = [array].flatten.map{|hash| RubyFPS::DataTypes::#{data_type.to_s.camelcase}.new(hash)}
@@ -56,12 +84,13 @@ module RubyFPS
       end
     end
 
-    def initialize(hash = {})
+    def initialize(hash = {}) #:nodoc:
       assign(hash)
     end
 
     protected
 
+    # Formats all attributes into a hash of parameters.
     def to_hash
       self.class.attribute_names.inject({}) do |hash, name|
         val = send(name.underscore)
@@ -69,10 +98,12 @@ module RubyFPS
       end
     end
 
+    # By default all parameter keys are CamelCase.
     def format_key(key)
       key.camelcase
     end
 
+    # Formats times and booleans as Amazon desires them.
     def format_value(val)
       case val
         when Time
@@ -86,6 +117,7 @@ module RubyFPS
       end
     end
 
+    # Allows easy initialization for a model by assigning attributes from a hash.
     def assign(hash)
       hash.each do |k, v|
         send("#{k.to_s.underscore}=", v.respond_to?(:strip) ? v.strip : v)

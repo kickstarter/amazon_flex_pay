@@ -1,5 +1,6 @@
-module RubyFPS::API
-  class ErrorResponse < RubyFPS::Model
+module RubyFPS::API #:nodoc:
+  class ErrorResponse < RubyFPS::Model #:nodoc:
+    # Re-implements the XML parsing because ErrorResponse does not inherit from BaseResponse.
     def self.from_xml(xml)
       new(MultiXml.parse(xml)['Response'])
     end
@@ -11,7 +12,7 @@ module RubyFPS::API
       @errors = [val['Error']].flatten.map{|e| Error.new(e)}
     end
 
-    class Error < RubyFPS::Model
+    class Error < RubyFPS::Model #:nodoc:
       attribute :code
       attribute :message
     end

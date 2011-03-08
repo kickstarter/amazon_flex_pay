@@ -18,6 +18,7 @@ require 'ruby_fps/pipelines'
 RestClient.log = 'stdout'
 
 module RubyFPS
+  VERSION = '1.0.pre'
   API_VERSION = '2010-08-28'
   PIPELINE_VERSION = '2009-01-09'
 
@@ -25,18 +26,25 @@ module RubyFPS
     attr_accessor :access_key
     attr_accessor :secret_key
 
-    attr_writer :api_endpoint
+    # The URL used for API calls.
+    #
+    # Defaults to the sandbox unless you set it explicitly or call <tt>go_live!</tt>.
     def api_endpoint
       @api_endpoint ||= 'https://fps.sandbox.amazonaws.com/'
     end
+    attr_writer :api_endpoint
 
-    attr_writer :pipeline_endpoint
+    # The URL used for pipeline redirects.
+    #
+    # Defaults to the sandbox unless you set it explicitly or call <tt>go_live!</tt>.
     def pipeline_endpoint
       @pipeline_endpoint ||= 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
     end
+    attr_writer :pipeline_endpoint
 
-    # RubyFPS defaults to the Amazon Payments sandbox.
-    # Call RubyFPS.go_live! to enable live transactions and real money.
+    # By default all API calls and pipeline redirects are in the Amazon Payments sandbox.
+    #
+    # Call <tt>RubyFPS.go_live!</tt> to enable live transactions and real money in this environment.
     def go_live!
       self.api_endpoint = 'https://fps.amazonaws.com/'
       self.pipeline_endpoint = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'

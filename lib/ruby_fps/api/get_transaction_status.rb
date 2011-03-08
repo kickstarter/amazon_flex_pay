@@ -1,8 +1,8 @@
-module RubyFPS::API
-  class GetTransactionStatus < Base
+module RubyFPS::API #:nodoc:
+  class GetTransactionStatus < Base #:nodoc:
     attribute :transaction_id
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :caller_reference
       attribute :status_code
       attribute :status_message

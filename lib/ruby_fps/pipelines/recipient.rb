@@ -1,5 +1,5 @@
-module RubyFPS::Pipelines
-  class Recipient < Base
+module RubyFPS::Pipelines #:nodoc:
+  class Recipient < Base #:nodoc:
     attribute :recipient_pays_fee # required
     attribute :payment_method, :enumeration => :payment_method
     attribute :max_fixed_fee

@@ -1,7 +1,7 @@
-module RubyFPS::API
-  class GetAccountBalance < Base
+module RubyFPS::API #:nodoc:
+  class GetAccountBalance < Base #:nodoc:
 
-    class Response < BaseResponse
+    class Response < BaseResponse #:nodoc:
       attribute :account_balance, :type => :account_balance
     end
   end

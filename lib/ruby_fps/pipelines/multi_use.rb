@@ -1,5 +1,5 @@
-module RubyFPS::Pipelines
-  class MultiUse < Base
+module RubyFPS::Pipelines #:nodoc:
+  class MultiUse < Base #:nodoc:
     attribute :global_amount_limit # required
     attribute :amount_type, :enumeration => :amount_type
     attribute :transaction_amount

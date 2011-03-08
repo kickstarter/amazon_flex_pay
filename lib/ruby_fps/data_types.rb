@@ -1,60 +1,63 @@
-# Complex Data Types pulled from the documentation
+# Complex Data Types pulled from the documentation, with some obvious corrections.
+#
+# See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/ComplexDataTypes.html
 module RubyFPS::DataTypes
-  class AccountBalance < RubyFPS::Model # moved from Enumerations
+  # moved from Enumerations
+  class AccountBalance < RubyFPS::Model #:nodoc:
     attribute :available_balances, :type => :available_balances
     attribute :pending_in_balance, :type => :amount
     attribute :pending_out_balance, :type => :amount
     attribute :total_balance, :type => :amount
   end
 
-  class Amount < RubyFPS::Model
+  class Amount < RubyFPS::Model #:nodoc:
     attribute :currency_code, :enumeration => :currency_code
     attribute :value
   end
 
-  class AvailableBalances < RubyFPS::Model
+  class AvailableBalances < RubyFPS::Model #:nodoc:
     attribute :disburse_balance, :type => :amount
     attribute :refund_balance, :type => :amount
   end
 
-  class DebtBalance < RubyFPS::Model
+  class DebtBalance < RubyFPS::Model #:nodoc:
     attribute :available_balance, :type => :amount
     attribute :pending_out_balance, :type => :amount
   end
 
-  class DescriptorPolicy < RubyFPS::Model
+  class DescriptorPolicy < RubyFPS::Model #:nodoc:
     attribute :'CSOwner', :enumeration => :cs_owner
     attribute :soft_descriptor_type, :enumeration => :soft_descriptor_type
   end
 
-  class OutstandingDebtBalance < RubyFPS::Model
+  class OutstandingDebtBalance < RubyFPS::Model #:nodoc:
     attribute :outstanding_balance, :type => :amount
     attribute :pending_out_balance, :type => :amount
   end
 
-  class OutstandingPrepaidLiability < RubyFPS::Model
+  class OutstandingPrepaidLiability < RubyFPS::Model #:nodoc:
     attribute :outstanding_balance, :type => :amount
     attribute :pending_in_balance, :type => :amount
   end
 
-  class PrepaidBalance < RubyFPS::Model
+  class PrepaidBalance < RubyFPS::Model #:nodoc:
     attribute :available_balance, :type => :amount
     attribute :pending_in_balance, :type => :amount
   end
 
-  class RelatedTransaction < RubyFPS::Model
+  class RelatedTransaction < RubyFPS::Model #:nodoc:
     attribute :relation_type, :enumeration => :relation_type
     attribute :transaction_id
   end
 
-  class StatusHistory < RubyFPS::Model
+  class StatusHistory < RubyFPS::Model #:nodoc:
     attribute :amount, :type => :amount
     attribute :date
     attribute :status_code
     attribute :transaction_status, :enumeration => :transaction_status
   end
 
-  class Token < RubyFPS::Model
+  class Token < RubyFPS::Model #:nodoc:
     attribute :caller_reference
     attribute :date_installed
     attribute :friendly_name
@@ -65,7 +68,7 @@ module RubyFPS::DataTypes
     attribute :token_type, :enumeration => :token_type
   end
 
-  class TokenUsageLimit < RubyFPS::Model
+  class TokenUsageLimit < RubyFPS::Model #:nodoc:
     attribute :amount, :type => :amount
     attribute :last_reset_amount, :type => :amount
     attribute :count
@@ -73,7 +76,7 @@ module RubyFPS::DataTypes
     attribute :last_reset_timestamp
   end
 
-  class Transaction < RubyFPS::Model
+  class Transaction < RubyFPS::Model #:nodoc:
     attribute :balance, :type => :amount
     attribute :caller_name
     attribute :caller_transaction_date
@@ -95,7 +98,7 @@ module RubyFPS::DataTypes
     attribute :transaction_status, :enumeration => :transaction_status
   end
 
-  class TransactionDetail < RubyFPS::Model
+  class TransactionDetail < RubyFPS::Model #:nodoc:
     attribute :caller_name
     attribute :caller_description
     attribute :caller_reference
@@ -124,7 +127,7 @@ module RubyFPS::DataTypes
     attribute :transaction_status, :enumeration => :transaction_status
   end
 
-  class TransactionPart < RubyFPS::Model
+  class TransactionPart < RubyFPS::Model #:nodoc:
     attribute :description
     attribute :fees_paid, :type => :amount
     attribute :instrument_id
