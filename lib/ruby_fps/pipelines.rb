@@ -1,5 +1,2 @@
 require 'ruby_fps/pipelines/base'
-require 'ruby_fps/pipelines/edit_token'
-require 'ruby_fps/pipelines/recipient'
-require 'ruby_fps/pipelines/single_use'
-require 'ruby_fps/pipelines/multi_use'
+Dir[File.dirname(__FILE__) + '/pipelines/*'].each do |p| require "ruby_fps/pipelines/#{File.basename(p)}" end

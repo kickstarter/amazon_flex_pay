@@ -1,17 +1,6 @@
+# load all api classes
 require 'ruby_fps/api/base'
-require 'ruby_fps/api/error_response'
-
-require 'ruby_fps/api/cancel'
-require 'ruby_fps/api/cancel_token'
-require 'ruby_fps/api/get_recipient_verification_status'
-require 'ruby_fps/api/get_token_by_caller'
-require 'ruby_fps/api/get_transaction'
-require 'ruby_fps/api/get_transaction_status'
-require 'ruby_fps/api/pay'
-require 'ruby_fps/api/refund'
-require 'ruby_fps/api/reserve'
-require 'ruby_fps/api/settle'
-require 'ruby_fps/api/verify_signature'
+Dir[File.dirname(__FILE__) + '/api/*'].each do |p| require "ruby_fps/api/#{File.basename(p)}" end
 
 module RubyFPS
   class << self
