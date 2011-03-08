@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary = 'API layer for Amazon FPS'
   s.description = 'A straight-forward REST API for Amazon\'s Flexible Payments Services.'
 
-  s.files = Dir.glob("lib/**/*") + %w(LICENSE README.rdoc)
+  s.files = Dir.glob("lib/**/*") + %w(LICENSE README.rdoc Rakefile)
   s.test_files = Dir.glob("test/**/*")
 
   s.add_dependency('rest-client', '~>1.6.1')
