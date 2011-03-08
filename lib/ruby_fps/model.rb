@@ -94,7 +94,11 @@ module RubyFPS
     def to_hash
       self.class.attribute_names.inject({}) do |hash, name|
         val = send(name.underscore)
-        hash.merge(format_key(name) => val.is_a?(RubyFPS::Model) ? val.to_hash : format_value(val))
+        if val.nil? or val == ''
+          hash
+        else
+          hash.merge(format_key(name) => val.is_a?(RubyFPS::Model) ? val.to_hash : format_value(val))
+        end
       end
     end
 
