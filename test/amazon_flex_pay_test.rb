@@ -45,7 +45,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     attribute :foo
     attribute :amount, :type => :amount
 
-    class Response; end
+    class Response < AmazonFlexPay::API::Base::BaseResponse; end
   end
 
   should "add necessary fields and sign api requests" do
@@ -70,6 +70,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_equal 'kVNr+W7L3Z/A6sBrcz1FHdshQqPFU0YOPZJpMglofNk=', params['Signature']
     assert_equal 'HmacSHA256',                                   params['SignatureMethod']
     assert_equal 2,                                              params['SignatureVersion']
+  end
+
+  should "store the request in the response" do
+    RestClient.expects(:get).returns(stub(:body => cancel_token_response))
+    response = TestRequest.new(:foo => 'bar').submit
+    assert_equal 'bar', response.request.foo
   end
 
   should "not allow unknown values for enumerated attributes" do

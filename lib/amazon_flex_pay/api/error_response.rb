@@ -10,6 +10,7 @@ module AmazonFlexPay::API #:nodoc:
       true
     end
 
+    attribute :request
     attribute :request_id
 
     attr_reader :errors
