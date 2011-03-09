@@ -39,19 +39,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert response.request_id
   end
 
-  ## errors
-
-  should "parse error responses" do
-    response = nil
-    assert_nothing_raised do
-      response = AmazonFlexPay::API::ErrorResponse.from_xml(error_response)
-    end
-    assert response.request_id
-    assert_equal 1, response.errors.count
-    assert response.errors.first.code
-    assert response.errors.first.message
-  end
-
   ## GetAccountActivity
 
   should "construct a GetAccountActivity request" do

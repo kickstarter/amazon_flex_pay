@@ -78,6 +78,17 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_equal 'bar', response.request.foo
   end
 
+  should "catch and parse errors" do
+    http_response = RestClient::Response.create(error_response, nil, nil)
+    RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
+
+    response = TestRequest.new(:foo => 'bar').submit
+    assert response.request_id
+    assert response.error?
+    assert response.errors.first.code
+    assert response.errors.first.message
+  end
+
   should "not allow unknown values for enumerated attributes" do
     assert_raises ArgumentError do TestRequest.new(:amount => {:currency_code => 'UNKOWN'}) end
   end

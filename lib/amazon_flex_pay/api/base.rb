@@ -8,7 +8,7 @@ module AmazonFlexPay::API #:nodoc:
         response = RestClient.get(url)
         self.class::Response.from_xml(response.body)
       rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-        AmazonFlexPay::API::ErrorResponse.from_xml(e.response.body)
+        ErrorResponse.from_xml(e.response.body)
       end
       response.request = self
       response
@@ -50,6 +50,31 @@ module AmazonFlexPay::API #:nodoc:
         assign(hash['ResponseMetadata'])
         result_key = hash.keys.find{|k| k.match(/Result$/)}
         assign(hash[result_key]) if hash[result_key] # not all APIs have a result object
+      end
+    end
+
+    class ErrorResponse < AmazonFlexPay::Model #:nodoc:
+      # Re-implements the XML parsing because ErrorResponse does not inherit from BaseResponse.
+      def self.from_xml(xml)
+        new(MultiXml.parse(xml)['Response'])
+      end
+
+      # Check response.error? to determine whether Amazon accepted the request.
+      def error?
+        true
+      end
+
+      attribute :request
+      attribute :request_id
+
+      attr_reader :errors
+      def errors=(val)
+        @errors = [val['Error']].flatten.map{|e| Error.new(e)}
+      end
+
+      class Error < AmazonFlexPay::Model #:nodoc:
+        attribute :code
+        attribute :message
       end
     end
 
