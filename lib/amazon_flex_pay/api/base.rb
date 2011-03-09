@@ -3,20 +3,14 @@ module AmazonFlexPay::API #:nodoc:
     # This compiles an API request object into a URL, sends it to Amazon, and processes
     # the response.
     def submit
+      url = AmazonFlexPay.api_endpoint + '?' + AmazonFlexPay.query_string(self.to_params)
       response = begin
-        url = AmazonFlexPay.api_endpoint + '?' + AmazonFlexPay.query_string(self.to_params)
-        response = RestClient.get(url)
-        self.class::Response.from_xml(response.body)
+        self.class::Response.from_xml(RestClient.get(url).body)
       rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
         ErrorResponse.from_xml(e.response.body)
       end
       response.request = self
       response
-    end
-
-    # Check response.error? to determine whether it's an ErrorResponse or not.
-    def error?
-      false
     end
 
     # Converts the API request object into parameters and signs them.
@@ -38,6 +32,11 @@ module AmazonFlexPay::API #:nodoc:
     class BaseResponse < AmazonFlexPay::Model
       attribute :request
       attribute :request_id
+
+      # Check response.error? to determine whether it's an ErrorResponse or not.
+      def error?
+        false
+      end
 
       # Parses Amazon's XML response to REST requests and instantiates the response.
       def self.from_xml(xml)
