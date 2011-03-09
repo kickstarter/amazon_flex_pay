@@ -18,7 +18,7 @@ require 'amazon_flex_pay/pipelines'
 RestClient.log = 'stdout'
 
 module AmazonFlexPay
-  VERSION = '0.9'
+  VERSION = '0.9.1'
   API_VERSION = '2010-08-28'
   PIPELINE_VERSION = '2009-01-09'
 
