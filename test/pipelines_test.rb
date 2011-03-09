@@ -6,6 +6,7 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
     assert_nothing_raised do
       params = AmazonFlexPay.edit_token_pipeline('pipe1', :token_id => 'token').to_params('http://example.com/return')
     end
+    assert_equal 'pipe1', params['callerReference']
   end
 
   should "build a multi use pipeline" do
@@ -17,6 +18,7 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
         :usage_limit_value1 => '2'
       ).to_params('http://example.com/return')
     end
+    assert_equal 'pipe2', params['callerReference']
     assert_equal '50.00', params['globalAmountLimit']
     assert_equal 'Count', params['usageLimitType1']
     assert_equal '2',     params['usageLimitValue1']
@@ -27,6 +29,7 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
     assert_nothing_raised do
       params = AmazonFlexPay::recipient_pipeline('pipe3', :recipient_pays_fee => true).to_params('http://example.com/return')
     end
+    assert_equal 'pipe3', params['callerReference']
   end
 
   should "build a single use pipeline" do
@@ -37,6 +40,7 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
         :transaction_amount => '25.00'
       ).to_params('http://example.com/return')
     end
+    assert_equal 'pipe4', params['callerReference']
     assert_equal '25.00', params['transactionAmount']
   end
 end

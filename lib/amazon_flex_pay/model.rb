@@ -29,8 +29,7 @@ module AmazonFlexPay
       #
       #   alias_method :transactions, :transaction
       def attribute(attr, options = {})
-        @attributes ||= []
-        @attributes << attr.to_s.camelcase
+        attribute_names << attr.to_s.camelcase
         name = attr.to_s.underscore
 
         # reader
@@ -50,7 +49,7 @@ module AmazonFlexPay
 
       # The names of all of the attributes of this model, in CamelCase.
       def attribute_names
-        @attributes || []
+        @attributes ||= (self == Model) ? [] : superclass.attribute_names.dup
       end
 
       def enumerated_attribute(attr, source = nil) #:nodoc:
