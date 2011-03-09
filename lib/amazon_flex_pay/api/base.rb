@@ -41,15 +41,15 @@ module AmazonFlexPay::API #:nodoc:
 
       # Parses Amazon's XML response to REST requests and instantiates the response.
       def self.from_xml(xml)
-        hash = MultiXml.parse(xml)
-        response_key = hash.keys.find{|k| k.match(/Response$/)}
-        new(hash[response_key])
-      end
+        response = MultiXml.parse(xml)
 
-      def initialize(hash) #:nodoc:
-        assign(hash['ResponseMetadata'])
-        result_key = hash.keys.find{|k| k.match(/Result$/)}
-        assign(hash[result_key]) if hash[result_key] # not all APIs have a result object
+        response_key = response.keys.find{|k| k.match(/Response$/)}
+        hash = response[response_key]['ResponseMetadata']
+
+        result_key = response[response_key].keys.find{|k| k.match(/Result$/)}
+        hash.merge!(response[response_key][result_key]) if response[response_key][result_key] # not all APIs have a result object
+
+        new(hash)
       end
     end
 
