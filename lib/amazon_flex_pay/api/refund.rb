@@ -4,6 +4,7 @@ module AmazonFlexPay::API #:nodoc:
     attribute :caller_reference # required
     attribute :refund_amount, :type => :amount
     attribute :transaction_id # required
+    attribute :marketplace_refund_policy, :enumeration => :marketplace_refund_policy
 
     class Response < BaseResponse #:nodoc:
       attribute :transaction_id
