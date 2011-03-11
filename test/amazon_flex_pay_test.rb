@@ -89,11 +89,15 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     http_response = RestClient::Response.create(error_response, nil, nil)
     RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
 
-    response = TestRequest.new(:foo => 'bar').submit
-    assert response.request_id
-    assert response.error?
-    assert response.errors.first.code
-    assert response.errors.first.message
+    error = nil
+    begin
+      TestRequest.new(:foo => 'bar').submit
+    rescue AmazonFlexPay::API::ErrorResponse => e
+      error = e
+    end
+    assert error.request_id
+    assert error.errors.first.code
+    assert error.errors.first.message
   end
 
   should "not allow unknown values for enumerated attributes" do

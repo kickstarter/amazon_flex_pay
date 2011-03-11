@@ -17,7 +17,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::Cancel::Response.from_xml(cancel_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction_id
     assert response.transaction_status
@@ -37,7 +36,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::CancelToken::Response.from_xml(cancel_token_response)
     end
-    assert !response.error?
     assert response.request_id
   end
 
@@ -57,7 +55,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetAccountActivity::Response.from_xml(get_account_activity_response)
     end
-    assert !response.error?
     assert response.request_id
     assert_equal 5, response.transactions.count
   end
@@ -76,7 +73,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetAccountBalance::Response.from_xml(get_account_balance_response)
     end
-    assert !response.error?
     assert response.request_id
     assert_equal '7.400000', response.account_balance.total_balance.value
   end
@@ -95,7 +91,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetRecipientVerificationStatus::Response.from_xml(get_recipient_verification_status_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.recipient_verification_status
   end
@@ -121,7 +116,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetTokenByCaller::Response.from_xml(get_token_by_caller_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.token.token_id
     assert response.token.token_status
@@ -177,7 +171,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetTransaction::Response.from_xml(get_transaction_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction.caller_reference
     assert response.transaction.payment_method
@@ -197,7 +190,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetTransactionStatus::Response.from_xml(get_transaction_status_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction_id
     assert_equal 'Success', response.transaction_status
@@ -218,7 +210,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::Pay::Response.from_xml(reserve_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction_id
     assert response.transaction_status
@@ -239,7 +230,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::Refund::Response.from_xml(refund_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction_id
     assert response.transaction_status
@@ -261,7 +251,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::Reserve::Response.from_xml(reserve_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction_id
     assert response.transaction_status
@@ -283,7 +272,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::Settle::Response.from_xml(settle_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.transaction_id
     assert response.transaction_status
@@ -303,7 +291,6 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::VerifySignature::Response.from_xml(verify_signature_response)
     end
-    assert !response.error?
     assert response.request_id
     assert response.verification_status
   end
