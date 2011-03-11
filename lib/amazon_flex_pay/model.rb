@@ -96,19 +96,15 @@ module AmazonFlexPay
       assign(hash)
     end
 
-    protected
-
     # Formats all attributes into a hash of parameters.
     def to_hash
       self.class.attribute_names.inject({}) do |hash, name|
-        val = send(name.underscore)
-        if val.nil? or val == '' or val == []
-          hash
-        else
-          hash.merge(format_key(name) => val.is_a?(AmazonFlexPay::Model) ? val.to_hash : format_value(val))
-        end
+        val = format_value(send(name.underscore))
+        val.empty? ? hash : hash.merge(format_key(name) => val)
       end
     end
+
+    protected
 
     # By default all parameter keys are CamelCase.
     def format_key(key)
@@ -118,6 +114,9 @@ module AmazonFlexPay
     # Formats times and booleans as Amazon desires them.
     def format_value(val)
       case val
+        when AmazonFlexPay::Model
+        val.to_hash
+
         when Time
         val.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
 

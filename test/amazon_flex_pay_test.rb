@@ -48,11 +48,13 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
 
     class Response < AmazonFlexPay::API::Base::BaseResponse; end
   end
-  
+
   should "respond with data structures even when models are empty" do
     tr = TestRequest.new
     assert tr.stuffs.is_a?(Array)
     assert tr.amount.respond_to?(:value)
+    assert !tr.to_hash.has_key?('Stuffs')
+    assert !tr.to_hash.has_key?('Amount')
   end
 
   should "add necessary fields and sign api requests" do
