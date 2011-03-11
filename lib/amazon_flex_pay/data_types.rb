@@ -108,7 +108,7 @@ module AmazonFlexPay::DataTypes
     attribute :'FPSFees', :type => :amount
     attribute :'FPSFeesPaidBy', :enumeration => :transactional_role
     attribute :'FPSOperation', :enumeration => :fps_operation
-    attribute :market_place_fees, :type => :amount
+    attribute :marketplace_fees, :type => :amount
     attribute :payment_method, :enumeration => :payment_method
     attribute :prepaid_instrument_id
     attribute :recipient_email
