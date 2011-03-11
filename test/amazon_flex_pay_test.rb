@@ -44,8 +44,15 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   class TestRequest < AmazonFlexPay::API::Base
     attribute :foo
     attribute :amount, :type => :amount
+    attribute :stuffs, :collection => :amount
 
     class Response < AmazonFlexPay::API::Base::BaseResponse; end
+  end
+  
+  should "respond with data structures even when models are empty" do
+    tr = TestRequest.new
+    assert tr.stuffs.is_a?(Array)
+    assert tr.amount.respond_to?(:value)
   end
 
   should "add necessary fields and sign api requests" do

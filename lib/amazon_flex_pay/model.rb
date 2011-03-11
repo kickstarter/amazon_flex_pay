@@ -32,9 +32,6 @@ module AmazonFlexPay
         attribute_names << attr.to_s.camelcase
         name = attr.to_s.underscore
 
-        # reader
-        attr_reader name
-
         # writer
         if options[:enumeration]
           enumerated_attribute(name, options[:enumeration])
@@ -43,7 +40,7 @@ module AmazonFlexPay
         elsif options[:collection]
           collection_attribute(name, options[:collection])
         else
-          attr_writer name
+          attr_accessor name
         end
       end
 
@@ -55,6 +52,10 @@ module AmazonFlexPay
       def enumerated_attribute(attr, source = nil) #:nodoc:
         source ||= attr
         class_eval <<-END
+          def #{attr}
+            @#{attr}
+          end
+
           def #{attr}=(val)
             options = AmazonFlexPay::Enumerations::#{source.to_s.camelcase}
             unless options.include?(val)
@@ -68,6 +69,10 @@ module AmazonFlexPay
       def complex_attribute(attr, data_type = nil) #:nodoc:
         data_type ||= attr
         class_eval <<-END
+          def #{attr}
+            @#{attr} ||= AmazonFlexPay::DataTypes::#{data_type.to_s.camelcase}.new
+          end
+
           def #{attr}=(hash)
             @#{attr} = AmazonFlexPay::DataTypes::#{data_type.to_s.camelcase}.new(hash)
           end
@@ -76,6 +81,10 @@ module AmazonFlexPay
 
       def collection_attribute(attr, data_type = nil) #:nodoc:
         class_eval <<-END
+          def #{attr}
+            @#{attr} ||= []
+          end
+
           def #{attr}=(array)
             @#{attr} = [array].flatten.map{|hash| AmazonFlexPay::DataTypes::#{data_type.to_s.camelcase}.new(hash)}
           end
@@ -93,7 +102,7 @@ module AmazonFlexPay
     def to_hash
       self.class.attribute_names.inject({}) do |hash, name|
         val = send(name.underscore)
-        if val.nil? or val == ''
+        if val.nil? or val == '' or val == []
           hash
         else
           hash.merge(format_key(name) => val.is_a?(AmazonFlexPay::Model) ? val.to_hash : format_value(val))
