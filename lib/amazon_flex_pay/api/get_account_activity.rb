@@ -8,7 +8,7 @@ module AmazonFlexPay::API #:nodoc:
     attribute :response_group
     attribute :role, :enumeration => :transactional_role
     attribute :sort_order_by_date, :enumeration => :sort_order_by_date
-    attribute :status, :type => :transaction_status
+    attribute :status, :enumeration => :transaction_status
 
     class Response < BaseResponse #:nodoc:
       attribute :batch_size
