@@ -114,7 +114,7 @@ module AmazonFlexPay::DataTypes
     attribute :recipient_email
     attribute :recipient_name
     attribute :recipient_token_id
-    attribute :related_transaction, :type => :related_transaction
+    attribute :related_transaction, :collection => :related_transaction
     attribute :sender_description
     attribute :sender_email
     attribute :sender_name
