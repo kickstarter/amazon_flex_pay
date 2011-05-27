@@ -5,7 +5,8 @@ require 'openssl'
 require 'rubygems'
 require 'rest_client'
 require 'multi_xml'
-require 'active_support/inflector' # camelcase, underscore
+require 'active_support' # camelcase, underscore
+require 'active_support/inflector'
 
 require 'amazon_flex_pay/signing'
 require 'amazon_flex_pay/model'
