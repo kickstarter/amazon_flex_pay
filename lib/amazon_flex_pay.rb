@@ -17,7 +17,7 @@ require 'amazon_flex_pay/api'
 require 'amazon_flex_pay/pipelines'
 
 module AmazonFlexPay
-  VERSION = '0.9.5'
+  VERSION = '0.9.6'
   API_VERSION = '2010-08-28'
   PIPELINE_VERSION = '2009-01-09'
 
