@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class VerifySignature < Base #:nodoc:
+  class VerifySignature < BaseRequest #:nodoc:
     attribute :url_end_point
     attribute :http_parameters
 

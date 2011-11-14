@@ -41,12 +41,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
 
   # api basics
 
-  class TestRequest < AmazonFlexPay::API::Base
+  class TestRequest < AmazonFlexPay::API::BaseRequest
     attribute :foo
     attribute :amount, :type => :amount
     attribute :stuffs, :collection => :amount
 
-    class Response < AmazonFlexPay::API::Base::BaseResponse; end
+    class Response < AmazonFlexPay::API::BaseRequest::BaseResponse; end
   end
 
   should "respond with data structures even when models are empty" do

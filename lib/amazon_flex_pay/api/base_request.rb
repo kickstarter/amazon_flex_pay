@@ -28,7 +28,7 @@ module AmazonFlexPay::API #:nodoc:
     end
   end
 
-  class Base < AmazonFlexPay::Model
+  class BaseRequest < AmazonFlexPay::Model
     # This compiles an API request object into a URL, sends it to Amazon, and processes
     # the response.
     def submit

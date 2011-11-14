@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class GetTokens < Base #:nodoc:
+  class GetTokens < BaseRequest #:nodoc:
     attribute :caller_reference
     attribute :token_status
     attribute :token_type

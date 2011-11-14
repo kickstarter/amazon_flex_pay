@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class GetAccountActivity < Base #:nodoc:
+  class GetAccountActivity < BaseRequest #:nodoc:
     attribute :start_date # required
     attribute :end_date
     attribute :'FPSOperation', :enumeration => :fps_operation

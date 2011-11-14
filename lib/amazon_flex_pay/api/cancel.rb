@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class Cancel < Base #:nodoc:
+  class Cancel < BaseRequest #:nodoc:
     attribute :transaction_id
     attribute :description
 

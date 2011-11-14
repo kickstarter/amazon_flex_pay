@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class Refund < Base #:nodoc:
+  class Refund < BaseRequest #:nodoc:
     attribute :caller_description
     attribute :caller_reference # required
     attribute :refund_amount, :type => :amount

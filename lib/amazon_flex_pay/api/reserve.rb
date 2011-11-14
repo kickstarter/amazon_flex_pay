@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class Reserve < Base #:nodoc:
+  class Reserve < BaseRequest #:nodoc:
     attribute :caller_description
     attribute :caller_reference # required
     attribute :charge_fee_to, :enumeration => :charge_fee_to

@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class GetTransaction < Base #:nodoc:
+  class GetTransaction < BaseRequest #:nodoc:
     attribute :transaction_id
 
     class Response < BaseResponse #:nodoc:

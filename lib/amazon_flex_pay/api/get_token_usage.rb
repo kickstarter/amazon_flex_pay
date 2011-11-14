@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class GetTokenUsage < Base #:nodoc:
+  class GetTokenUsage < BaseRequest #:nodoc:
     attribute :token_id
 
     class Response < BaseResponse #:nodoc:

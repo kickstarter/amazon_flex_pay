@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class CancelToken < Base #:nodoc:
+  class CancelToken < BaseRequest #:nodoc:
     attribute :token_id
     attribute :reason_text
 
