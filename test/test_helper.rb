@@ -2,7 +2,7 @@
 require 'test/unit'
 require 'rubygems'
 #gem 'rails', '2.3.11'
-gem 'rails', '3.0.7'
+gem 'rails', '3.0.10'
 require 'mocha'
 
 # load the gem
