@@ -11,7 +11,7 @@ module AmazonFlexPay::Enumerations
   InstrumentStatus = %w(Active All Cancelled)
   MarketplaceRefundPolicy = %w(MarketplaceTxnOnly MasterAndMarketplaceTxn MasterTxnOnly) # moved from DataTypes
   PaymentMethod = %w(ABT ACH CC Debt Prepaid)
-  RecipientVerificationStatus = %w(VerificationComplete VerificationPending VerificationCompleteNoLimits) # moved from DataTypes
+  RecipientVerificationStatus = %w(PendingUserAction PendingReview Closed Active) # moved from DataTypes
   RelationType = %w(MarketplaceFee Parent Refund RefundReversal Reserve Settle)
   SoftDescriptorType = %w(Static Dynamic) # undocumented
   SortOrderByDate = %w(Ascending Descending)

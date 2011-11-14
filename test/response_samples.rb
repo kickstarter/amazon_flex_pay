@@ -352,7 +352,7 @@ module ResponseSamples
       <GetRecipientVerificationResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
         <GetRecipientVerificationResult>
           <RecipientVerificationStatus>
-          	VerificationComplete
+            PendingUserAction
           </RecipientVerificationStatus>
         </GetRecipientVerificationResult>
         <ResponseMetadata>

@@ -33,9 +33,7 @@ module AmazonFlexPay
       API::GetAccountBalance.new.submit
     end
 
-    # Returns the status of a recipient's Amazon account. This is a high-level status indicating whether
-    # the recipient can receive up to $10k per month (VerificationComplete) or has no receiving limitations
-    # at all (VerificationCompleteNoLimits).
+    # Returns the status of a recipient's Amazon account.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/GetRecipientVerificationStatus.html
     def get_recipient_verification_status(recipient_token_id)

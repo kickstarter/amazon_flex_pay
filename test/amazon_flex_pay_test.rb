@@ -73,10 +73,10 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     # standard additions
     assert_equal 'foo', params['AWSAccessKeyId']
     assert_equal 'TestRequest', params['Action']
-    assert_equal '2010-08-28', params['Version']
+    assert_equal '2011-09-20', params['Version']
 
     # the signature is backwards-calculated for regression testing
-    assert_equal 'kVNr+W7L3Z/A6sBrcz1FHdshQqPFU0YOPZJpMglofNk=', params['Signature']
+    assert_equal 'WVrkmK7qt/T+gtHWcdzqtkLRH8c06l/mPv3ZfxyvNyg=', params['Signature']
     assert_equal 'HmacSHA256',                                   params['SignatureMethod']
     assert_equal 2,                                              params['SignatureVersion']
   end
