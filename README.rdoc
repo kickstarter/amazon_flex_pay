@@ -38,4 +38,4 @@ Note that while the examples are shown using Rails methods, the only Rails requi
 
 All methods required for integrating API calls and Pipeline requests are found in the AmazonFlexPay module.
 
-Copyright (c) 2011 Lance Ivy, released under the MIT license.
+Copyright (c) 2012 Kickstarter, released under the MIT license.
