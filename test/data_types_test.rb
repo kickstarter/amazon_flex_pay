@@ -16,4 +16,15 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert related.marketplace_fee?
     assert !related.refund?
   end
+
+  should "support RelatedTransaction expansion" do
+    related = RelatedTransaction.new(:relation_type => 'Refund', :transaction_id => 'abc123')
+    AmazonFlexPay::API::GetTransaction.any_instance.expects(:submit).returns(
+      AmazonFlexPay::API::GetTransaction::Response.new(
+        :transaction => {:transaction_id => 'abc123'}
+      )
+    )
+
+    assert_equal 'abc123', related.full.transaction_id
+  end
 end

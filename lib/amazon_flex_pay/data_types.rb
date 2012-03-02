@@ -56,6 +56,10 @@ module AmazonFlexPay::DataTypes
         end
       END
     end
+
+    def full
+      AmazonFlexPay::API::GetTransaction.new(:transaction_id => transaction_id).submit
+    end
   end
 
   class StatusHistory < AmazonFlexPay::Model #:nodoc:
