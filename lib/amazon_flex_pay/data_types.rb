@@ -125,6 +125,8 @@ module AmazonFlexPay::DataTypes
     attribute :transaction_amount, :type => :amount
     attribute :transaction_id
     attribute :transaction_status, :enumeration => :transaction_status
+
+    alias_method :related_transactions, :related_transaction
   end
 
   class TransactionPart < AmazonFlexPay::Model #:nodoc:
