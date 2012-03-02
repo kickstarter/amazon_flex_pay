@@ -176,6 +176,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert response.transaction.payment_method
   end
 
+  should "delegate to transaction attributes" do
+    response = AmazonFlexPay::API::GetTransaction::Response.from_xml(get_transaction_response)
+    assert_equal response.caller_reference, response.transaction.caller_reference
+    assert_equal response.date_completed, response.transaction.date_completed
+  end
+
   ## GetTransactionStatus
 
   should "construct a GetTransactionStatus request" do
