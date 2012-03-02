@@ -9,4 +9,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert detail.respond_to?(:related_transactions)
     assert_equal detail.related_transactions, detail.related_transaction
   end
+
+  should "support RelatedTransaction relation type query methods" do
+    related = RelatedTransaction.new(:relation_type => 'MarketplaceFee', :transaction_id => 'abc123')
+    assert related.respond_to?(:marketplace_fee?)
+    assert related.marketplace_fee?
+    assert !related.refund?
+  end
 end

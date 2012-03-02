@@ -10,8 +10,8 @@ require 'active_support/inflector'
 
 require 'amazon_flex_pay/signing'
 require 'amazon_flex_pay/model'
-require 'amazon_flex_pay/data_types'
 require 'amazon_flex_pay/enumerations'
+require 'amazon_flex_pay/data_types'
 
 require 'amazon_flex_pay/api'
 require 'amazon_flex_pay/pipelines'

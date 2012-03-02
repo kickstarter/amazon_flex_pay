@@ -48,6 +48,14 @@ module AmazonFlexPay::DataTypes
   class RelatedTransaction < AmazonFlexPay::Model #:nodoc:
     attribute :relation_type, :enumeration => :relation_type
     attribute :transaction_id
+
+    AmazonFlexPay::Enumerations::RelationType.each do |relation|
+      class_eval <<-END
+        def #{relation.underscore}?
+          relation_type == '#{relation}'
+        end
+      END
+    end
   end
 
   class StatusHistory < AmazonFlexPay::Model #:nodoc:
