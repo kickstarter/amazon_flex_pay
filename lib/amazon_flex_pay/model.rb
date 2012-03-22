@@ -58,7 +58,7 @@ module AmazonFlexPay
 
           def #{attr}=(val)
             options = AmazonFlexPay::Enumerations::#{source.to_s.camelcase}
-            unless options.include?(val)
+            unless [val].flatten.all?{ |v| options.include?(v) }
               raise ArgumentError.new("\#{val} is not an allowed option (\#{options.join(', ')})")
             end
             @#{attr} = val
@@ -122,6 +122,9 @@ module AmazonFlexPay
 
         when TrueClass, FalseClass
         val.to_s.capitalize
+
+        when Array
+        val.join(',')
 
         else
         val.to_s

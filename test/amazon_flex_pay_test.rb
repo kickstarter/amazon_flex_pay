@@ -45,6 +45,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     attribute :foo
     attribute :amount, :type => :amount
     attribute :stuffs, :collection => :amount
+    attribute :method, :enumeration => :payment_method
 
     class Response < AmazonFlexPay::API::BaseRequest::BaseResponse; end
   end
@@ -103,7 +104,17 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   end
 
   should "not allow unknown values for enumerated attributes" do
-    assert_raises ArgumentError do TestRequest.new(:amount => {:currency_code => 'UNKOWN'}) end
+    assert_raises ArgumentError do TestRequest.new(:method => 'UNKOWN') end
+  end
+
+  should "allow value sets for enumerated attributes" do
+    assert_nothing_raised do
+      TestRequest.new(:method => ['CC', 'ACH'])
+    end
+  end
+
+  should "convert value sets into comma-separated lists" do
+    assert_equal 'a,b', TestRequest.new(:foo => ['a', 'b']).to_hash['Foo']
   end
 
   # pipeline basics
