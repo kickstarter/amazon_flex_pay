@@ -1,33 +1,4 @@
 module AmazonFlexPay::API #:nodoc:
-  class ErrorResponse < StandardError
-    # Re-implements the XML parsing because ErrorResponse does not inherit from BaseResponse.
-    def self.from_xml(xml)
-      new(MultiXml.parse(xml)['Response'])
-    end
-
-    def initialize(hash)
-      self.request_id = hash['RequestID']
-      self.errors     = hash['Errors']
-    end
-
-    attr_accessor :request
-    attr_accessor :request_id
-
-    attr_reader :errors
-    def errors=(val)
-      @errors = [val['Error']].flatten.map{|e| Error.new(e)}
-    end
-
-    def to_s
-      errors.map{|e| "#{e.code}: #{e.message}"}.join(', ')
-    end
-
-    class Error < AmazonFlexPay::Model #:nodoc:
-      attribute :code
-      attribute :message
-    end
-  end
-
   class BaseRequest < AmazonFlexPay::Model
     # This compiles an API request object into a URL, sends it to Amazon, and processes
     # the response.
@@ -39,8 +10,8 @@ module AmazonFlexPay::API #:nodoc:
         response
       rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
         er = ErrorResponse.from_xml(e.response.body)
-        er.request = self
-        raise er
+        klass = AmazonFlexPay::API.const_get(er.errors.first.code)
+        raise klass.new(er.errors.first.code, er.errors.first.message, er.request_id, self)
       end
     end
 
@@ -77,6 +48,25 @@ module AmazonFlexPay::API #:nodoc:
         new(hash)
       end
     end
+
+    class ErrorResponse < AmazonFlexPay::Model
+      attribute :request_id
+
+      def self.from_xml(xml)
+        new(MultiXml.parse(xml)['Response'])
+      end
+
+      attr_reader :errors
+      def errors=(val)
+        @errors = [val['Error']].flatten.map{|e| Error.new(e)}
+      end
+
+      class Error < AmazonFlexPay::Model #:nodoc:
+        attribute :code
+        attribute :message
+      end
+    end
+
 
     protected
 

@@ -95,12 +95,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     error = nil
     begin
       TestRequest.new(:foo => 'bar').submit
-    rescue AmazonFlexPay::API::ErrorResponse => e
+    rescue AmazonFlexPay::API::InvalidParams => e
       error = e
     end
     assert error.request_id
-    assert error.errors.first.code
-    assert error.errors.first.message
+    assert_equal 'InvalidParams', error.code
+    assert error.message.match(/has to be a valid/)
   end
 
   should "not allow unknown values for enumerated attributes" do
