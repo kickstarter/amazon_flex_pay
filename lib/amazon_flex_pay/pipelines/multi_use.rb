@@ -24,5 +24,6 @@ module AmazonFlexPay::Pipelines #:nodoc:
     attribute :state
     attribute :zip
     attribute :phone_number
+    attribute :disable_guest
   end
 end

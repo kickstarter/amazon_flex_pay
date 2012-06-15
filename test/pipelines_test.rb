@@ -37,10 +37,12 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
     assert_nothing_raised do
       params = AmazonFlexPay.single_use_pipeline('pipe4',
         :recipient_token => 'token',
-        :transaction_amount => '25.00'
+        :transaction_amount => '25.00',
+        :disable_guest => true
       ).to_params('http://example.com/return')
     end
     assert_equal 'pipe4', params['callerReference']
     assert_equal '25.00', params['transactionAmount']
+    assert_equal 'True', params['disableGuest']
   end
 end

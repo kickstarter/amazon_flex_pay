@@ -20,5 +20,6 @@ module AmazonFlexPay::Pipelines #:nodoc:
     attribute :payment_method, :enumeration => :payment_method
     attribute :payment_reason
     attribute :reserve
+    attribute :disable_guest
   end
 end
