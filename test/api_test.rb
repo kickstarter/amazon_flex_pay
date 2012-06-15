@@ -135,7 +135,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetTokenUsage::Response.from_xml(get_token_usage_response)
     end
-    assert 2, response.token_usage_limits.count
+    assert_equal 2, response.token_usage_limits.count
     assert_equal '10.000000', response.token_usage_limits.first.amount.value
     assert_equal '1', response.token_usage_limits.last.count
   end
@@ -154,7 +154,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_nothing_raised do
       response = AmazonFlexPay::API::GetTokens::Response.from_xml(get_tokens_response)
     end
-    assert 1, response.tokens.count
+    assert_equal 1, response.tokens.count
   end
 
   ## GetTransaction
