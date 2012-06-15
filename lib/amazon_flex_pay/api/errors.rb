@@ -8,22 +8,32 @@ module AmazonFlexPay::API
   end
 
   # generated from http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAPIReference/APIErrorCodesTable.html
-  # 2010-08-28
+  # as of: 2012-06-15
   %w(
     AccessFailure
     AccountClosed
     AccountLimitsExceeded
     AmountOutOfRange
+    AuthFailure
     ConcurrentModification
     DuplicateRequest
     InactiveInstrument
+    IncompatibleTokens
+    InstrumentAccessDenied
+    InstrumentExpired
     InsufficientBalance
     InternalError
     InvalidAccountState
     InvalidAccountState_Caller
     InvalidAccountState_Recipient
     InvalidAccountState_Sender
+    InvalidCallerReference
+    InvalidClientTokenId
+    InvalidDateRange
     InvalidParams
+    InvalidPaymentInstrument
+    InvalidPaymentMethod
+    InvalidRecipientForCCTransaction
     InvalidSenderRoleForAccountType
     InvalidTokenId
     InvalidTokenId_Recipient
@@ -31,15 +41,24 @@ module AmazonFlexPay::API
     InvalidTokenType
     InvalidTransactionId
     InvalidTransactionState
+    NotMarketplaceApp
     OriginalTransactionFailed
+    OriginalTransactionIncomplete
+    PaymentInstrumentNotCC
+    PaymentMethodNotDefined
+    PrepaidFundingLimitExceeded
     RefundAmountExceeded
+    SameSenderAndRecipient
+    SameTokenIdUsedMultipleTimes
     SenderNotOriginalRecipient
     SettleAmountGreaterThanDebt
     SettleAmountGreaterThanReserveAmount
+    SignatureDoesNotMatch
     TokenAccessDenied
     TokenNotActive
     TokenNotActive_Recipient
     TokenNotActive_Sender
+    TokenUsageError
     TransactionDenied
     TransactionFullyRefundedAlready
     TransactionTypeNotRefundable
