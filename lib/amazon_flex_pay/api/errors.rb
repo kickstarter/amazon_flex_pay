@@ -5,6 +5,10 @@ module AmazonFlexPay::API
     def initialize(code, message, request_id, request)
       @request_id, @request, @code, @message = request_id, request, code, message
     end
+
+    def to_s
+      message
+    end
   end
 
   # generated from http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAPIReference/APIErrorCodesTable.html
