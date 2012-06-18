@@ -71,4 +71,11 @@ module AmazonFlexPay::API
   ).each do |name|
     const_set(name, Class.new(Error))
   end
+
+  # undocumented errors
+  %w(
+    InvalidSignature
+  ).each do |name|
+    const_set(name, Class.new(Error))
+  end
 end
