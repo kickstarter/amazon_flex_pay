@@ -5,10 +5,15 @@ module AmazonFlexPay::API #:nodoc:
     def submit
       url = AmazonFlexPay.api_endpoint + '?' + AmazonFlexPay.query_string(self.to_params)
       begin
-        response = self.class::Response.from_xml(RestClient.get(url).body)
+        http = RestClient.get(url)
+        ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => action_name, :request => url, :response => http.body, :code => http.code)
+
+        response = self.class::Response.from_xml(http.body)
         response.request = self
         response
       rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
+        ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => action_name, :request => url, :response => e.http_body, :code => e.http_code)
+
         er = ErrorResponse.from_xml(e.response.body)
         klass = AmazonFlexPay::API.const_get(er.errors.first.code)
         raise klass.new(er.errors.first.code, er.errors.first.message, er.request_id, self)

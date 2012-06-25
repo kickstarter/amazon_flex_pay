@@ -83,13 +83,31 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   end
 
   should "store the request in the response" do
-    RestClient.expects(:get).returns(stub(:body => cancel_token_response))
+    RestClient.expects(:get).returns(stub(:body => cancel_token_response, :code => 200))
     response = TestRequest.new(:foo => 'bar').submit
     assert_equal 'bar', response.request.foo
   end
 
+  should "instrument successful responses" do
+    events = []
+    callback = proc{ |*args| events << ActiveSupport::Notifications::Event.new(*args) }
+
+    ActiveSupport::Notifications.subscribed(callback, "amazon_flex_pay.api") do
+      RestClient.expects(:get).returns(stub(:body => cancel_token_response, :code => 200))
+      TestRequest.new(:foo => 'bar').submit
+    end
+
+    assert_equal 1, events.size
+
+    assert_equal 'TestRequest', events.first.payload[:action]
+    assert_equal 200, events.first.payload[:code]
+    assert events.first.payload.has_key?(:request)
+    assert events.first.payload.has_key?(:response)
+  end
+
   should "catch and parse errors" do
-    http_response = RestClient::Response.create(error_response, nil, nil)
+    net_http_res = stub(:code => 400)
+    http_response = RestClient::Response.create(error_response, net_http_res, nil)
     RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
 
     error = nil
@@ -101,6 +119,25 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert error.request_id
     assert_equal 'InvalidParams', error.code
     assert error.message.match(/has to be a valid/)
+  end
+
+  should "instrument error responses" do
+    events = []
+    callback = proc{ |*args| events << ActiveSupport::Notifications::Event.new(*args) }
+
+    ActiveSupport::Notifications.subscribed(callback, "amazon_flex_pay.api") do
+      net_http_res = stub(:code => 400)
+      http_response = RestClient::Response.create(error_response, net_http_res, nil)
+      RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
+
+      TestRequest.new(:foo => 'bar').submit rescue AmazonFlexPay::API::Error
+    end
+
+    assert_equal 1, events.size
+    assert_equal 'TestRequest', events.first.payload[:action]
+    assert_equal 400, events.first.payload[:code]
+    assert events.first.payload.has_key?(:request)
+    assert events.first.payload.has_key?(:response)
   end
 
   should "not allow unknown values for enumerated attributes" do
