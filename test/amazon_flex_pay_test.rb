@@ -98,11 +98,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     end
 
     assert_equal 1, events.size
-
     assert_equal 'TestRequest', events.first.payload[:action]
     assert_equal 200, events.first.payload[:code]
     assert events.first.payload.has_key?(:request)
     assert events.first.payload.has_key?(:response)
+    assert events.first.duration > 0.1, events.first.duration.to_s
   end
 
   should "catch and parse errors" do
@@ -138,6 +138,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_equal 400, events.first.payload[:code]
     assert events.first.payload.has_key?(:request)
     assert events.first.payload.has_key?(:response)
+    assert events.first.duration > 0.1, events.first.duration.to_s
   end
 
   should "not allow unknown values for enumerated attributes" do
