@@ -7,6 +7,7 @@ require 'rest_client'
 require 'multi_xml'
 require 'active_support' # camelcase, underscore
 require 'active_support/inflector'
+require 'active_support/notifications'
 
 require 'amazon_flex_pay/signing'
 require 'amazon_flex_pay/model'
