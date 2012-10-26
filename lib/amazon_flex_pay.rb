@@ -9,6 +9,8 @@ require 'active_support' # camelcase, underscore
 require 'active_support/inflector'
 require 'active_support/notifications'
 
+require 'amazon_flex_pay/version'
+
 require 'amazon_flex_pay/signing'
 require 'amazon_flex_pay/model'
 require 'amazon_flex_pay/enumerations'
@@ -18,7 +20,6 @@ require 'amazon_flex_pay/api'
 require 'amazon_flex_pay/pipelines'
 
 module AmazonFlexPay
-  VERSION = '0.9.13'
   API_VERSION = '2011-09-20'
   PIPELINE_VERSION = '2009-01-09'
 
