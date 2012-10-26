@@ -9,6 +9,8 @@ require 'active_support' # camelcase, underscore
 require 'active_support/inflector'
 require 'active_support/notifications'
 
+require 'amazon_flex_pay/version'
+
 require 'amazon_flex_pay/signing'
 require 'amazon_flex_pay/model'
 require 'amazon_flex_pay/enumerations'
