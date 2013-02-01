@@ -21,7 +21,7 @@ module AmazonFlexPay::Pipelines #:nodoc:
 
       params['signatureVersion'] = 2
       params['signatureMethod'] = 'HmacSHA256'
-      params['signature'] = AmazonFlexPay.signature(AmazonFlexPay.pipeline_endpoint, params)
+      params['signature'] = AmazonFlexPay.sign(AmazonFlexPay.pipeline_endpoint, params)
 
       params
     end

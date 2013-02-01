@@ -10,7 +10,7 @@ require 'active_support/inflector'
 require 'active_support/notifications'
 
 require 'amazon_flex_pay/util'
-require 'amazon_flex_pay/signing'
+require 'amazon_flex_pay/signature'
 require 'amazon_flex_pay/model'
 require 'amazon_flex_pay/enumerations'
 require 'amazon_flex_pay/data_types'
@@ -52,6 +52,11 @@ module AmazonFlexPay
       self.api_endpoint = 'https://fps.amazonaws.com/'
       self.pipeline_endpoint = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
     end
+
+    def sign(endpoint, params)
+      Signature.new(secret_key, endpoint, params).generate
+    end
+
   end
 
 end

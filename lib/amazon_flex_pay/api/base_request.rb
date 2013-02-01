@@ -37,7 +37,7 @@ module AmazonFlexPay::API #:nodoc:
 
       params['SignatureVersion'] = 2
       params['SignatureMethod'] = 'HmacSHA256'
-      params['Signature'] = AmazonFlexPay.signature(AmazonFlexPay.api_endpoint, params)
+      params['Signature'] = AmazonFlexPay.sign(AmazonFlexPay.api_endpoint, params)
 
       params
     end
