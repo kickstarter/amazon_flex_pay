@@ -2,47 +2,47 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
   should "build a edit token pipeline" do
-    params = nil
+    hash = nil
     assert_nothing_raised do
-      params = AmazonFlexPay.edit_token_pipeline('pipe1', :token_id => 'token').to_params('http://example.com/return')
+      hash = AmazonFlexPay.edit_token_pipeline('pipe1', :token_id => 'token').to_hash('http://example.com/return')
     end
-    assert_equal 'pipe1', params['callerReference']
+    assert_equal 'pipe1', hash['callerReference']
   end
 
   should "build a multi use pipeline" do
-    params = nil
+    hash = nil
     assert_nothing_raised do
-      params = AmazonFlexPay.multi_use_pipeline('pipe2',
+      hash = AmazonFlexPay.multi_use_pipeline('pipe2',
         :global_amount_limit => "50.00",
         :usage_limit_type1 => 'Count',
         :usage_limit_value1 => '2'
-      ).to_params('http://example.com/return')
+      ).to_hash('http://example.com/return')
     end
-    assert_equal 'pipe2', params['callerReference']
-    assert_equal '50.00', params['globalAmountLimit']
-    assert_equal 'Count', params['usageLimitType1']
-    assert_equal '2',     params['usageLimitValue1']
+    assert_equal 'pipe2', hash['callerReference']
+    assert_equal '50.00', hash['globalAmountLimit']
+    assert_equal 'Count', hash['usageLimitType1']
+    assert_equal '2',     hash['usageLimitValue1']
   end
 
   should "build a recipient pipeline" do
-    params = nil
+    hash = nil
     assert_nothing_raised do
-      params = AmazonFlexPay::recipient_pipeline('pipe3', :recipient_pays_fee => true).to_params('http://example.com/return')
+      hash = AmazonFlexPay::recipient_pipeline('pipe3', :recipient_pays_fee => true).to_hash('http://example.com/return')
     end
-    assert_equal 'pipe3', params['callerReference']
+    assert_equal 'pipe3', hash['callerReference']
   end
 
   should "build a single use pipeline" do
-    params = nil
+    hash = nil
     assert_nothing_raised do
-      params = AmazonFlexPay.single_use_pipeline('pipe4',
+      hash = AmazonFlexPay.single_use_pipeline('pipe4',
         :recipient_token => 'token',
         :transaction_amount => '25.00',
         :disable_guest => true
-      ).to_params('http://example.com/return')
+      ).to_hash('http://example.com/return')
     end
-    assert_equal 'pipe4', params['callerReference']
-    assert_equal '25.00', params['transactionAmount']
-    assert_equal 'True', params['disableGuest']
+    assert_equal 'pipe4', hash['callerReference']
+    assert_equal '25.00', hash['transactionAmount']
+    assert_equal 'True', hash['disableGuest']
   end
 end

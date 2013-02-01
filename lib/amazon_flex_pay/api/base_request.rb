@@ -3,7 +3,7 @@ module AmazonFlexPay::API #:nodoc:
     # This compiles an API request object into a URL, sends it to Amazon, and processes
     # the response.
     def submit
-      url = AmazonFlexPay.api_endpoint + '?' + AmazonFlexPay::Util.query_string(self.to_params)
+      url = self.to_url
       ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => action_name, :request => url) do |payload|
         begin
           http = RestClient.get(url)
@@ -26,20 +26,27 @@ module AmazonFlexPay::API #:nodoc:
       end
     end
 
-    # Converts the API request object into parameters and signs them.
-    def to_params
-      params = self.to_hash.merge(
-        'Action' => action_name,
+    def to_url
+      AmazonFlexPay.api_endpoint + '?' + self.to_param
+    end
+
+    def to_param
+      params = to_hash.merge(
         'AWSAccessKeyId' => AmazonFlexPay.access_key,
-        'Version' => AmazonFlexPay::API_VERSION,
-        'Timestamp' => format_value(Time.now)
+        'Timestamp' => format_value(Time.now),
+        'SignatureVersion' => 2,
+        'SignatureMethod' => 'HmacSHA256'
       )
-
-      params['SignatureVersion'] = 2
-      params['SignatureMethod'] = 'HmacSHA256'
       params['Signature'] = AmazonFlexPay.sign(AmazonFlexPay.api_endpoint, params)
+      AmazonFlexPay::Util.query_string(params)
+    end
 
-      params
+    # Converts the API request object into parameters and signs them.
+    def to_hash
+      super.merge(
+        'Action' => action_name,
+        'Version' => AmazonFlexPay::API_VERSION
+      )
     end
 
     class BaseResponse < AmazonFlexPay::Model

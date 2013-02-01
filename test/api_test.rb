@@ -120,9 +120,9 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert response.token.token_id
     assert response.token.token_status
   end
-  
+
   ## GetTokenUsage
-  
+
   should "construct a GetTokenUsage request" do
     AmazonFlexPay::API::GetTokenUsage.any_instance.expects(:submit)
     assert_nothing_raised do
@@ -139,7 +139,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert_equal '10.000000', response.token_usage_limits.first.amount.value
     assert_equal '1', response.token_usage_limits.last.count
   end
-  
+
   ## GetTokens
 
   should "construct a GetTokens request" do
@@ -249,7 +249,7 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
       request = AmazonFlexPay::API::Reserve.new(:sender_token_id => 'token', :transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid', :descriptor_policy => {:cs_owner => 'Caller', :soft_descriptor_type => 'Static'})
     end
     assert_equal 'Caller', request.descriptor_policy.cs_owner
-    assert request.to_params['DescriptorPolicy'].has_key?('CSOwner') # funky casing
+    assert request.to_hash['DescriptorPolicy'].has_key?('CSOwner') # funky casing
   end
 
   should "parse a Reserve response" do

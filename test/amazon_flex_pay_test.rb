@@ -58,28 +58,37 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert !tr.to_hash.has_key?('Amount')
   end
 
-  should "add necessary fields and sign api requests" do
+  should "hash api requests" do
+    request = TestRequest.new(:foo => 'bar', :amount => {:value => '3.14', :currency_code => 'USD'})
+    hash = request.to_hash
+
+    # simple attributes
+    assert_equal 'bar', hash['Foo']
+
+    # complex attributes
+    assert_equal '3.14', hash['Amount']['Value']
+    assert_equal 'USD', hash['Amount']['CurrencyCode']
+
+    # standard additions
+    assert_equal 'TestRequest', hash['Action']
+    assert_equal '2011-09-20', hash['Version']
+  end
+
+  should "parameterize api requests" do
     Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
 
     request = TestRequest.new(:foo => 'bar', :amount => {:value => '3.14', :currency_code => 'USD'})
-    params = request.to_params
+    param = request.to_param
 
-    # simple attributes
-    assert_equal 'bar', params['Foo']
-
-    # complex attributes
-    assert_equal '3.14', params['Amount']['Value']
-    assert_equal 'USD', params['Amount']['CurrencyCode']
-
-    # standard additions
-    assert_equal 'foo', params['AWSAccessKeyId']
-    assert_equal 'TestRequest', params['Action']
-    assert_equal '2011-09-20', params['Version']
-
-    # the signature is backwards-calculated for regression testing
-    assert_equal 'WVrkmK7qt/T+gtHWcdzqtkLRH8c06l/mPv3ZfxyvNyg=', params['Signature']
-    assert_equal 'HmacSHA256',                                   params['SignatureMethod']
-    assert_equal 2,                                              params['SignatureVersion']
+    {
+      'Foo' => 'bar',
+      'AWSAccessKeyId' => 'foo',
+      'SignatureVersion' => 2,
+      'SignatureMethod' => 'HmacSHA256',
+      'Signature' => 'WVrkmK7qt%2FT%2BgtHWcdzqtkLRH8c06l%2FmPv3ZfxyvNyg%3D'
+    }.each do |key, value|
+      assert param.match(/#{key}=#{value}/), "#{param} should contain #{key}=#{value}"
+    end
   end
 
   should "store the request in the response" do
@@ -161,19 +170,29 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     attribute :foo
   end
 
-  should "add necessary fields and sign pipeline urls" do
+  should "hash pipelines" do
+    pipeline = TestPipeline.new(:foo => 'bar')
+    hash = pipeline.to_hash('http://example.com/return')
+
+    assert_equal 'TestPipeline', hash['pipelineName']
+    assert_equal '2009-01-09', hash['version']
+    assert_equal 'http://example.com/return', hash['returnURL']
+  end
+
+  should "parameterize signed pipelines" do
     Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
 
     pipeline = TestPipeline.new(:foo => 'bar')
-    params = pipeline.to_params('http://example.com/return')
+    param = pipeline.to_param('http://example.com/return')
 
-    assert_equal 'TestPipeline', params['pipelineName']
-    assert_equal 'foo', params['callerKey']
-    assert_equal '2009-01-09', params['version']
-    assert_equal 'http://example.com/return', params['returnURL']
-
-    assert_equal 2,                                              params['signatureVersion']
-    assert_equal 'HmacSHA256',                                   params['signatureMethod']
-    assert_equal 'OuUJQqFBJhezmcWOAhDGcsD/6OXpOLVlcbF3XMIZO3U=', params['signature']
+    {
+      'foo' => 'bar',
+      'callerKey' => 'foo',
+      'signatureVersion' => 2,
+      'signatureMethod' => 'HmacSHA256',
+      'signature' => 'OuUJQqFBJhezmcWOAhDGcsD%2F6OXpOLVlcbF3XMIZO3U%3D'
+    }.each do |key, value|
+      assert param.match(/#{key}=#{value}/), "#{param} should contain #{key}=#{value}"
+    end
   end
 end
