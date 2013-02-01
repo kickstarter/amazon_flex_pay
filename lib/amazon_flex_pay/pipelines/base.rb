@@ -7,7 +7,7 @@ module AmazonFlexPay::Pipelines #:nodoc:
 
     # Returns a full redirectable URL for this pipeline.
     def url(return_url)
-      AmazonFlexPay.pipeline_endpoint + '?' + AmazonFlexPay.query_string(to_params(return_url))
+      AmazonFlexPay.pipeline_endpoint + '?' + AmazonFlexPay::Util.query_string(to_params(return_url))
     end
 
     # Converts the Pipeline object into parameters and signs them.

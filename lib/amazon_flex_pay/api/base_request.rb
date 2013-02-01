@@ -3,7 +3,7 @@ module AmazonFlexPay::API #:nodoc:
     # This compiles an API request object into a URL, sends it to Amazon, and processes
     # the response.
     def submit
-      url = AmazonFlexPay.api_endpoint + '?' + AmazonFlexPay.query_string(self.to_params)
+      url = AmazonFlexPay.api_endpoint + '?' + AmazonFlexPay::Util.query_string(self.to_params)
       ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => action_name, :request => url) do |payload|
         begin
           http = RestClient.get(url)

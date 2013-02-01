@@ -9,6 +9,7 @@ require 'active_support' # camelcase, underscore
 require 'active_support/inflector'
 require 'active_support/notifications'
 
+require 'amazon_flex_pay/util'
 require 'amazon_flex_pay/signing'
 require 'amazon_flex_pay/model'
 require 'amazon_flex_pay/enumerations'
@@ -21,6 +22,8 @@ module AmazonFlexPay
   VERSION = '0.9.14'
   API_VERSION = '2011-09-20'
   PIPELINE_VERSION = '2009-01-09'
+
+  extend Util
 
   class << self
     attr_accessor :access_key
