@@ -8,8 +8,8 @@ module AmazonFlexPay
     # Note that this does not allow changing a token's limits or recipients or really anything but the method.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/EditTokenPipeline.html
-    def edit_token_pipeline(caller_reference, options = {})
-      AmazonFlexPay::Pipelines::EditToken.new(options.merge(:caller_reference => caller_reference))
+    def edit_token_pipeline(caller_reference, return_url, options = {})
+      AmazonFlexPay::Pipelines::EditToken.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
     # Creates a pipeline that will authorize you to send money _from_ the user multiple times.
@@ -18,15 +18,15 @@ module AmazonFlexPay
     # you only plan to collect from the token once.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/MultiUsePipeline.html
-    def multi_use_pipeline(caller_reference, options = {})
-      AmazonFlexPay::Pipelines::MultiUse.new(options.merge(:caller_reference => caller_reference))
+    def multi_use_pipeline(caller_reference, return_url, options = {})
+      AmazonFlexPay::Pipelines::MultiUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
     # Creates a pipeline that will authorize you to send money _to_ the user.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/CBUIapiMerchant.html
-    def recipient_pipeline(caller_reference, options = {})
-      AmazonFlexPay::Pipelines::Recipient.new(options.merge(:caller_reference => caller_reference))
+    def recipient_pipeline(caller_reference, return_url, options = {})
+      AmazonFlexPay::Pipelines::Recipient.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
     # Creates a pipeline that will authorize you to send money _from_ the user one time.
@@ -34,8 +34,8 @@ module AmazonFlexPay
     # Note that if this payment fails, you must create another pipeline to get another token.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/2010-08-28/FPSBasicGuide/SingleUsePipeline.html
-    def single_use_pipeline(caller_reference, options = {})
-      AmazonFlexPay::Pipelines::SingleUse.new(options.merge(:caller_reference => caller_reference))
+    def single_use_pipeline(caller_reference, return_url, options = {})
+      AmazonFlexPay::Pipelines::SingleUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
   end
 end

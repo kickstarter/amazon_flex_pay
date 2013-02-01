@@ -171,8 +171,8 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   end
 
   should "hash pipelines" do
-    pipeline = TestPipeline.new(:foo => 'bar')
-    hash = pipeline.to_hash('http://example.com/return')
+    pipeline = TestPipeline.new(:foo => 'bar', :return_url => 'http://example.com/return')
+    hash = pipeline.to_hash
 
     assert_equal 'TestPipeline', hash['pipelineName']
     assert_equal '2009-01-09', hash['version']
@@ -182,8 +182,8 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   should "parameterize signed pipelines" do
     Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
 
-    pipeline = TestPipeline.new(:foo => 'bar')
-    param = pipeline.to_param('http://example.com/return')
+    pipeline = TestPipeline.new(:foo => 'bar', :return_url => 'http://example.com/return')
+    param = pipeline.to_param
 
     {
       'foo' => 'bar',

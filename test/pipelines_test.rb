@@ -4,7 +4,9 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
   should "build a edit token pipeline" do
     hash = nil
     assert_nothing_raised do
-      hash = AmazonFlexPay.edit_token_pipeline('pipe1', :token_id => 'token').to_hash('http://example.com/return')
+      hash = AmazonFlexPay.edit_token_pipeline('pipe1', 'http://example.com/return',
+        :token_id => 'token'
+      ).to_hash
     end
     assert_equal 'pipe1', hash['callerReference']
   end
@@ -12,11 +14,11 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
   should "build a multi use pipeline" do
     hash = nil
     assert_nothing_raised do
-      hash = AmazonFlexPay.multi_use_pipeline('pipe2',
+      hash = AmazonFlexPay.multi_use_pipeline('pipe2', 'http://example.com/return',
         :global_amount_limit => "50.00",
         :usage_limit_type1 => 'Count',
         :usage_limit_value1 => '2'
-      ).to_hash('http://example.com/return')
+      ).to_hash
     end
     assert_equal 'pipe2', hash['callerReference']
     assert_equal '50.00', hash['globalAmountLimit']
@@ -27,7 +29,9 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
   should "build a recipient pipeline" do
     hash = nil
     assert_nothing_raised do
-      hash = AmazonFlexPay::recipient_pipeline('pipe3', :recipient_pays_fee => true).to_hash('http://example.com/return')
+      hash = AmazonFlexPay::recipient_pipeline('pipe3', 'http://example.com/return',
+        :recipient_pays_fee => true
+      ).to_hash
     end
     assert_equal 'pipe3', hash['callerReference']
   end
@@ -35,11 +39,11 @@ class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
   should "build a single use pipeline" do
     hash = nil
     assert_nothing_raised do
-      hash = AmazonFlexPay.single_use_pipeline('pipe4',
+      hash = AmazonFlexPay.single_use_pipeline('pipe4', 'http://example.com/return',
         :recipient_token => 'token',
         :transaction_amount => '25.00',
         :disable_guest => true
-      ).to_hash('http://example.com/return')
+      ).to_hash
     end
     assert_equal 'pipe4', hash['callerReference']
     assert_equal '25.00', hash['transactionAmount']
