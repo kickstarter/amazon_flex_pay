@@ -23,6 +23,17 @@ module AmazonFlexPay
   API_VERSION = '2011-09-20'
   PIPELINE_VERSION = '2009-01-09'
 
+  ENDPOINTS = {
+    :sandbox => {
+      :api => 'https://fps.sandbox.amazonaws.com/',
+      :cbui => 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
+    }.freeze,
+    :live => {
+      :api => 'https://fps.amazonaws.com/',
+      :cbui => 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
+    }.freeze
+  }
+
   extend Util
 
   class << self
@@ -33,7 +44,7 @@ module AmazonFlexPay
     #
     # Defaults to the sandbox unless you set it explicitly or call <tt>go_live!</tt>.
     def api_endpoint
-      @api_endpoint ||= 'https://fps.sandbox.amazonaws.com/'
+      @api_endpoint ||= ENDPOINTS[:sandbox][:api]
     end
     attr_writer :api_endpoint
 
@@ -41,7 +52,7 @@ module AmazonFlexPay
     #
     # Defaults to the sandbox unless you set it explicitly or call <tt>go_live!</tt>.
     def pipeline_endpoint
-      @pipeline_endpoint ||= 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
+      @pipeline_endpoint ||= ENDPOINTS[:sandbox][:cbui]
     end
     attr_writer :pipeline_endpoint
 
@@ -49,8 +60,8 @@ module AmazonFlexPay
     #
     # Call <tt>AmazonFlexPay.go_live!</tt> to enable live transactions and real money in this environment.
     def go_live!
-      self.api_endpoint = 'https://fps.amazonaws.com/'
-      self.pipeline_endpoint = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
+      self.api_endpoint = ENDPOINTS[:live][:api]
+      self.pipeline_endpoint = ENDPOINTS[:live][:cbui]
     end
 
     def sign(endpoint, params)
