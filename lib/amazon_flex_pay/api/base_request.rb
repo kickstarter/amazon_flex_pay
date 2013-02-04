@@ -1,31 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
   class BaseRequest < AmazonFlexPay::Model
-    # This compiles an API request object into a URL, sends it to Amazon, and processes
-    # the response.
-    def submit
-      url = self.to_url
-      ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => action_name, :request => url) do |payload|
-        begin
-          http = RestClient.get(url)
-
-          payload[:response] = http.body
-          payload[:code] = http.code
-
-          response = self.class::Response.from_xml(http.body)
-          response.request = self
-          response
-
-        rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
-          payload[:response] = e.http_body
-          payload[:code] = e.http_code
-
-          er = ErrorResponse.from_xml(e.response.body)
-          klass = AmazonFlexPay::API.const_get(er.errors.first.code)
-          raise klass.new(er.errors.first.code, er.errors.first.message, er.request_id, self)
-        end
-      end
-    end
-
     def to_url
       AmazonFlexPay.api_endpoint + '?' + self.to_param
     end
@@ -47,6 +21,10 @@ module AmazonFlexPay::API #:nodoc:
         'Action' => action_name,
         'Version' => AmazonFlexPay::API_VERSION
       )
+    end
+
+    def action_name #:nodoc:
+      self.class.to_s.split('::').last
     end
 
     class BaseResponse < AmazonFlexPay::Model
@@ -83,13 +61,6 @@ module AmazonFlexPay::API #:nodoc:
         attribute :code
         attribute :message
       end
-    end
-
-
-    protected
-
-    def action_name #:nodoc:
-      self.class.to_s.split('::').last
     end
   end
 end

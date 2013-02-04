@@ -8,14 +8,14 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/Cancel.html
     def cancel(transaction_id, options = {})
-      API::Cancel.new(options.merge(:transaction_id => transaction_id)).submit
+      submit API::Cancel.new(options.merge(:transaction_id => transaction_id))
     end
 
     # Cancels a token.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/CancelToken.html
     def cancel_token(token_id, options = {})
-      API::CancelToken.new(options.merge(:token_id => token_id)).submit
+      submit API::CancelToken.new(options.merge(:token_id => token_id))
     end
 
     # Searches through transactions on your account. Helpful if you want to compare vs your own records,
@@ -23,21 +23,21 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAccountManagementGuide/GetAccountActivity.html
     def get_account_activity(start_date, end_date, options = {})
-      API::GetAccountActivity.new(options.merge(:start_date => start_date, :end_date => end_date)).submit
+      submit API::GetAccountActivity.new(options.merge(:start_date => start_date, :end_date => end_date))
     end
 
     # Gets your Amazon Payments account balance.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAccountManagementGuide/GetAccountBalance.html
     def get_account_balance
-      API::GetAccountBalance.new.submit
+      submit API::GetAccountBalance.new
     end
 
     # Returns the status of a recipient's Amazon account.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/GetRecipientVerificationStatus.html
     def get_recipient_verification_status(recipient_token_id)
-      API::GetRecipientVerificationStatus.new(:recipient_token_id => recipient_token_id).submit
+      submit API::GetRecipientVerificationStatus.new(:recipient_token_id => recipient_token_id)
     end
 
     # Returns information about a token's state from a caller reference.
@@ -48,21 +48,21 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/GetTokensByCaller.html
     def get_token_by_caller_reference(ref)
-      API::GetTokenByCaller.new(:caller_reference => ref).submit
+      submit API::GetTokenByCaller.new(:caller_reference => ref)
     end
 
     # Returns information about a token's state from a token id.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/GetTokensByCaller.html
     def get_token_by_id(id)
-      API::GetTokenByCaller.new(:token_id => id).submit
+      submit API::GetTokenByCaller.new(:token_id => id)
     end
 
     # Returns information about how much of the token has been used, and what remains.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAccountManagementGuide/GetTokenUsage.html
     def get_token_usage(id)
-      API::GetTokenUsage.new(:token_id => id).submit
+      submit API::GetTokenUsage.new(:token_id => id)
     end
 
     # Returns all of your tokens. Note that when you send someone through a recipient pipeline, that registers
@@ -74,7 +74,7 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAccountManagementGuide/GetTokens.html
     def get_tokens(options = {})
-      API::GetTokens.new(options).submit
+      submit API::GetTokens.new(options)
     end
 
     # Returns all of Amazon's details about a transaction, such as its status and when it began and finished
@@ -82,7 +82,7 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAccountManagementGuide/GetTransaction.html
     def get_transaction(id)
-      API::GetTransaction.new(:transaction_id => id).submit
+      submit API::GetTransaction.new(:transaction_id => id)
     end
 
     # Returns the current status of the transaction. Note that this information is also available from
@@ -90,7 +90,7 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAccountManagementGuide/GetTransactionStatus.html
     def get_transaction_status(id)
-      API::GetTransactionStatus.new(:transaction_id => id).submit
+      submit API::GetTransactionStatus.new(:transaction_id => id)
     end
 
     # Begins a Pay request for a sender token. If you are not also the recipient (this is a three-party marketplace
@@ -100,11 +100,11 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/Pay.html
     def pay(value, currency, sender_token_id, caller_reference, options = {})
-      API::Pay.new(options.merge(
+      submit API::Pay.new(options.merge(
         :transaction_amount => {:value => value, :currency_code => currency},
         :sender_token_id => sender_token_id,
         :caller_reference => caller_reference
-      )).submit
+      ))
     end
 
     # Begins a Reserve request for the sender token. Very similar to <tt>pay</tt>.
@@ -113,11 +113,11 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/Reserve.html
     def reserve(value, currency, sender_token_id, caller_reference, options = {})
-      API::Reserve.new(options.merge(
+      submit API::Reserve.new(options.merge(
         :transaction_amount => {:value => value, :currency_code => currency},
         :sender_token_id => sender_token_id,
         :caller_reference => caller_reference
-      )).submit
+      ))
     end
 
     # Refunds a transaction. By default it will refund the entire transaction, but you can
@@ -127,7 +127,7 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/Refund.html
     def refund(transaction_id, caller_reference, options = {})
-      API::Refund.new(options.merge(:transaction_id => transaction_id, :caller_reference => caller_reference)).submit
+      submit API::Refund.new(options.merge(:transaction_id => transaction_id, :caller_reference => caller_reference))
     end
 
     # If you have a Reserve transaction, use this to Settle (capture) it.
@@ -136,7 +136,7 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/Settle.html
     def settle(transaction_id, options = {})
-      API::Settle.new(options.merge(:reserve_transaction_id => transaction_id)).submit
+      submit API::Settle.new(options.merge(:reserve_transaction_id => transaction_id))
     end
 
     # This is how you verify IPNs and pipeline responses.
@@ -154,7 +154,35 @@ module AmazonFlexPay
     #
     # Please use <tt>verify_request</tt> instead to make sure the URL and params remain properly formatted.
     def verify_signature(url, params)
-      API::VerifySignature.new(:url_end_point => url, :http_parameters => params).submit
+      submit API::VerifySignature.new(:url_end_point => url, :http_parameters => params)
+    end
+
+    protected
+
+    # This compiles an API request object into a URL, sends it to Amazon, and processes
+    # the response.
+    def submit(request)
+      url = request.to_url
+      ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => request.action_name, :request => url) do |payload|
+        begin
+          http = RestClient.get(url)
+
+          payload[:response] = http.body
+          payload[:code] = http.code
+
+          response = request.class::Response.from_xml(http.body)
+          response.request = request
+          response
+
+        rescue RestClient::BadRequest, RestClient::Unauthorized, RestClient::Forbidden => e
+          payload[:response] = e.http_body
+          payload[:code] = e.http_code
+
+          er = AmazonFlexPay::API::BaseRequest::ErrorResponse.from_xml(e.response.body)
+          klass = AmazonFlexPay::API.const_get(er.errors.first.code)
+          raise klass.new(er.errors.first.code, er.errors.first.message, er.request_id, request)
+        end
+      end
     end
   end
 end

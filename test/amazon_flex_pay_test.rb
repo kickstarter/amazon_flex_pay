@@ -93,7 +93,8 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
 
   should "store the request in the response" do
     RestClient.expects(:get).returns(stub(:body => cancel_token_response, :code => 200))
-    response = TestRequest.new(:foo => 'bar').submit
+    request = TestRequest.new(:foo => 'bar')
+    response = AmazonFlexPay.send(:submit, request)
     assert_equal 'bar', response.request.foo
   end
 
@@ -103,7 +104,8 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
 
     ActiveSupport::Notifications.subscribed(callback, "amazon_flex_pay.api") do
       RestClient.expects(:get).returns(stub(:body => cancel_token_response, :code => 200))
-      TestRequest.new(:foo => 'bar').submit
+      request = TestRequest.new(:foo => 'bar')
+      AmazonFlexPay.send(:submit, request)
     end
 
     assert_equal 1, events.size
@@ -121,7 +123,8 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
 
     error = nil
     begin
-      TestRequest.new(:foo => 'bar').submit
+      request = TestRequest.new(:foo => 'bar')
+      AmazonFlexPay.send(:submit, request)
     rescue AmazonFlexPay::API::InvalidParams => e
       error = e
     end
@@ -139,7 +142,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
       http_response = RestClient::Response.create(error_response, net_http_res, nil)
       RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
 
-      TestRequest.new(:foo => 'bar').submit rescue AmazonFlexPay::API::Error
+      begin
+        request = TestRequest.new(:foo => 'bar')
+        AmazonFlexPay.send(:submit, request)
+      rescue AmazonFlexPay::API::Error
+      end
     end
 
     assert_equal 1, events.size

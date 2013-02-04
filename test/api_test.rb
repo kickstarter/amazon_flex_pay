@@ -6,10 +6,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## Cancel
 
   should "construct a Cancel request" do
-    AmazonFlexPay::API::Cancel.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.cancel('txid', {:description => 'test'})
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::Cancel
+      assert_equal 'txid', request.transaction_id
+      assert_equal 'test', request.description
     end
+    AmazonFlexPay.cancel('txid', {:description => 'test'})
   end
 
   should "parse a Cancel response" do
@@ -25,10 +27,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## CancelToken
 
   should "construct a CancelToken request" do
-    AmazonFlexPay::API::CancelToken.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.cancel_token('token', {:reason_text => 'test'})
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::CancelToken
+      assert_equal 'token', request.token_id
+      assert_equal 'test', request.reason_text
     end
+    AmazonFlexPay.cancel_token('token', {:reason_text => 'test'})
   end
 
   should "parse a CancelToken response" do
@@ -42,12 +46,14 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetAccountActivity
 
   should "construct a GetAccountActivity request" do
-    AmazonFlexPay::API::GetAccountActivity.any_instance.expects(:submit)
     since = Time.now - 60*60*24 # 1.day
     to    = Time.now
-    assert_nothing_raised do
-      AmazonFlexPay.get_account_activity(since, to)
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetAccountActivity
+      assert_equal since, request.start_date
+      assert_equal to, request.end_date
     end
+    AmazonFlexPay.get_account_activity(since, to)
   end
 
   should "parse a GetAccountActivity response" do
@@ -62,10 +68,10 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetAccountBalance
 
   should "construct a GetAccountBalance request" do
-    AmazonFlexPay::API::GetAccountBalance.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_account_balance
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetAccountBalance
     end
+    AmazonFlexPay.get_account_balance
   end
 
   should "parse a GetAccountBalance response" do
@@ -80,10 +86,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetRecipientVerificationStatus
 
   should "construct a GetRecipientVerificationStatus request" do
-    AmazonFlexPay::API::GetRecipientVerificationStatus.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_recipient_verification_status('token')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetRecipientVerificationStatus
+      assert_equal 'token', request.recipient_token_id
     end
+    AmazonFlexPay.get_recipient_verification_status('token')
   end
 
   should "parse a GetRecipientVerificationStatus response" do
@@ -98,17 +105,19 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetTokenByCaller
 
   should "construct a GetTokenByCaller request by reference" do
-    AmazonFlexPay::API::GetTokenByCaller.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_token_by_caller_reference('reference')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetTokenByCaller
+      assert_equal 'reference', request.caller_reference
     end
+    AmazonFlexPay.get_token_by_caller_reference('reference')
   end
 
   should "construct a GetTokenByCaller request by token id" do
-    AmazonFlexPay::API::GetTokenByCaller.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_token_by_id('token')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetTokenByCaller
+      assert_equal 'token', request.token_id
     end
+    AmazonFlexPay.get_token_by_id('token')
   end
 
   should "parse a GetTokenByCaller response" do
@@ -124,10 +133,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetTokenUsage
 
   should "construct a GetTokenUsage request" do
-    AmazonFlexPay::API::GetTokenUsage.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_token_usage('token')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetTokenUsage
+      assert_equal 'token', request.token_id
     end
+    AmazonFlexPay.get_token_usage('token')
   end
 
   should "parse a GetTokenUsage response" do
@@ -143,10 +153,10 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetTokens
 
   should "construct a GetTokens request" do
-    AmazonFlexPay::API::GetTokens.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_tokens
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetTokens
     end
+    AmazonFlexPay.get_tokens
   end
 
   should "parse a GetTokens response" do
@@ -160,10 +170,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetTransaction
 
   should "construct a GetTransaction request" do
-    AmazonFlexPay::API::GetTransaction.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_transaction('txid')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetTransaction
+      assert_equal 'txid', request.transaction_id
     end
+    AmazonFlexPay.get_transaction('txid')
   end
 
   should "parse a GetTransaction response" do
@@ -185,10 +196,11 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## GetTransactionStatus
 
   should "construct a GetTransactionStatus request" do
-    AmazonFlexPay::API::GetTransactionStatus.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.get_transaction_status('txid')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::GetTransactionStatus
+      assert_equal 'txid', request.transaction_id
     end
+    AmazonFlexPay.get_transaction_status('txid')
   end
 
   should "parse a GetTransactionStatus response" do
@@ -204,11 +216,14 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## Pay
 
   should "construct a Pay request" do
-    request = nil
-    assert_nothing_raised do
-      request = AmazonFlexPay::API::Pay.new(:transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::Pay
+      assert_equal '1.00', request.transaction_amount.value
+      assert_equal 'USD', request.transaction_amount.currency_code
+      assert_equal 'token', request.sender_token_id
+      assert_equal 'myid', request.caller_reference
     end
-    assert_equal '1.00', request.transaction_amount.value
+    AmazonFlexPay.pay('1.00', 'USD', 'token', 'myid')
   end
 
   should "parse a Pay response" do
@@ -224,11 +239,13 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## Refund
 
   should "construct a Refund request" do
-    request = nil
-    assert_nothing_raised do
-      request = AmazonFlexPay::API::Refund.new(:transaction_id => 'txid', :caller_reference => 'myid', :refund_amount => {:currency_code => 'USD', :value => '1.00'})
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::Refund
+      assert_equal 'txid', request.transaction_id
+      assert_equal 'myid', request.caller_reference
+      assert_equal '1.00', request.refund_amount.value
     end
-    assert_equal '1.00', request.refund_amount.value
+    AmazonFlexPay.refund('txid', 'myid', :refund_amount => {:currency_code => 'USD', :value => '1.00'})
   end
 
   should "parse a Refund response" do
@@ -244,12 +261,17 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## Reserve
 
   should "construct a Reserve request" do
-    request = nil
-    assert_nothing_raised do
-      request = AmazonFlexPay::API::Reserve.new(:sender_token_id => 'token', :transaction_amount => {:currency_code => 'USD', :value => '1.00'}, :caller_reference => 'myid', :descriptor_policy => {:cs_owner => 'Caller', :soft_descriptor_type => 'Static'})
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::Reserve
+      assert_equal '1.00', request.transaction_amount.value
+      assert_equal 'USD', request.transaction_amount.currency_code
+      assert_equal 'token', request.sender_token_id
+      assert_equal 'myid', request.caller_reference
+      assert_equal 'Caller', request.descriptor_policy.cs_owner
+
+      assert request.to_hash['DescriptorPolicy'].has_key?('CSOwner') # funky casing
     end
-    assert_equal 'Caller', request.descriptor_policy.cs_owner
-    assert request.to_hash['DescriptorPolicy'].has_key?('CSOwner') # funky casing
+    AmazonFlexPay.reserve('1.00', 'USD', 'token', 'myid', :descriptor_policy => {:cs_owner => 'Caller', :soft_descriptor_type => 'Static'})
   end
 
   should "parse a Reserve response" do
@@ -265,12 +287,13 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## Settle
 
   should "construct a Settle request" do
-    request = nil
-    assert_nothing_raised do
-      request = AmazonFlexPay::API::Settle.new(:reserve_transaction_id => 'txid', :transaction_amount => {:currency_code => 'USD', :value => '3.14'})
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::Settle
+      assert_equal 'txid', request.reserve_transaction_id
+      assert_equal 'USD', request.transaction_amount.currency_code
+      assert_equal '3.14', request.transaction_amount.value
     end
-    assert_equal 'USD', request.transaction_amount.currency_code
-    assert_equal '3.14', request.transaction_amount.value
+    AmazonFlexPay.settle('txid', :transaction_amount => {:currency_code => 'USD', :value => '3.14'})
   end
 
   should "parse a Settle response" do
@@ -286,10 +309,12 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
   ## VerifySignature
 
   should "construct a VerifySignature request" do
-    AmazonFlexPay::API::VerifySignature.any_instance.expects(:submit)
-    assert_nothing_raised do
-      AmazonFlexPay.verify_signature('http://example.com/api', 'foo=bar')
+    AmazonFlexPay.expects(:submit).with do |request|
+      assert request.is_a? AmazonFlexPay::API::VerifySignature
+      assert_equal 'http://example.com/api', request.url_end_point
+      assert_equal 'foo=bar', request.http_parameters
     end
+    AmazonFlexPay.verify_signature('http://example.com/api', 'foo=bar')
   end
 
   should "parse a VerifySignature response" do
