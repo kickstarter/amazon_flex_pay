@@ -35,6 +35,8 @@ module AmazonFlexPay
   }
 
   extend Util
+  extend AmazonFlexPay::API
+  extend AmazonFlexPay::Pipelines
 
   class << self
     attr_accessor :access_key
