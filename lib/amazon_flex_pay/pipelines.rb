@@ -9,7 +9,7 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/EditTokenPipeline.html
     def edit_token_pipeline(caller_reference, return_url, options = {})
-      AmazonFlexPay::Pipelines::EditToken.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
+      cbui AmazonFlexPay::Pipelines::EditToken.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
     # Creates a pipeline that will authorize you to send money _from_ the user multiple times.
@@ -19,14 +19,14 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/MultiUsePipeline.html
     def multi_use_pipeline(caller_reference, return_url, options = {})
-      AmazonFlexPay::Pipelines::MultiUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
+      cbui AmazonFlexPay::Pipelines::MultiUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
     # Creates a pipeline that will authorize you to send money _to_ the user.
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/CBUIapiMerchant.html
     def recipient_pipeline(caller_reference, return_url, options = {})
-      AmazonFlexPay::Pipelines::Recipient.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
+      cbui AmazonFlexPay::Pipelines::Recipient.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
     # Creates a pipeline that will authorize you to send money _from_ the user one time.
@@ -35,7 +35,13 @@ module AmazonFlexPay
     #
     # See http://docs.amazonwebservices.com/AmazonFPS/2010-08-28/FPSBasicGuide/SingleUsePipeline.html
     def single_use_pipeline(caller_reference, return_url, options = {})
-      AmazonFlexPay::Pipelines::SingleUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
+      cbui AmazonFlexPay::Pipelines::SingleUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
+    end
+
+    protected
+
+    def cbui(pipeline)
+      pipeline.to_url
     end
   end
 end
