@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
-class AmazonFlexPayTest < AmazonFlexPay::Test
+class AmazonFlexPay::DataTypesTest < AmazonFlexPay::Test
   include AmazonFlexPay::DataTypes
   include ResponseSamples
 

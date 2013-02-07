@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
-class AmazonFlexPayTest < AmazonFlexPay::Test
+class AmazonFlexPay::APITest < AmazonFlexPay::Test
   include ResponseSamples
 
   ## Cancel
@@ -325,4 +325,94 @@ class AmazonFlexPayTest < AmazonFlexPay::Test
     assert response.request_id
     assert response.verification_status
   end
+
+  ## verifying a request
+
+  should "verify a GET request" do
+    request = stub(:get? => true, :protocol => 'http://', :host_with_port => 'example.com', :path => '/foo/bar', :query_string => 'a=1&b=2')
+    AmazonFlexPay.expects(:verify_signature).with('http://example.com/foo/bar', 'a=1&b=2').returns(true)
+    assert AmazonFlexPay.verify_request(request)
+  end
+
+  should "verify a POST request" do
+    request = stub(:get? => false, :protocol => 'http://', :host_with_port => 'example.com', :path => '/foo/bar', :raw_post => 'a=1&b=2')
+    AmazonFlexPay.expects(:verify_signature).with('http://example.com/foo/bar', 'a=1&b=2').returns(true)
+    assert AmazonFlexPay.verify_request(request)
+  end
+
+  ## Submit
+
+  class TestRequest < AmazonFlexPay::API::BaseRequest
+    attribute :foo
+
+    class Response < AmazonFlexPay::API::BaseRequest::BaseResponse; end
+  end
+
+
+  should "store the request in the response" do
+    RestClient.expects(:get).returns(stub(:body => cancel_token_response, :code => 200))
+    request = TestRequest.new(:foo => 'bar')
+    response = AmazonFlexPay.send(:submit, request)
+    assert_equal 'bar', response.request.foo
+  end
+
+  should "instrument successful responses" do
+    events = []
+    callback = proc{ |*args| events << ActiveSupport::Notifications::Event.new(*args) }
+
+    ActiveSupport::Notifications.subscribed(callback, "amazon_flex_pay.api") do
+      RestClient.expects(:get).returns(stub(:body => cancel_token_response, :code => 200))
+      request = TestRequest.new(:foo => 'bar')
+      AmazonFlexPay.send(:submit, request)
+    end
+
+    assert_equal 1, events.size
+    assert_equal 'TestRequest', events.first.payload[:action]
+    assert_equal 200, events.first.payload[:code]
+    assert events.first.payload.has_key?(:request)
+    assert events.first.payload.has_key?(:response)
+    assert events.first.duration > 0.1, events.first.duration.to_s
+  end
+
+  should "catch and parse errors" do
+    net_http_res = stub(:code => 400)
+    http_response = RestClient::Response.create(error_response, net_http_res, nil)
+    RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
+
+    error = nil
+    begin
+      request = TestRequest.new(:foo => 'bar')
+      AmazonFlexPay.send(:submit, request)
+    rescue AmazonFlexPay::API::InvalidParams => e
+      error = e
+    end
+    assert error.request_id
+    assert_equal 'InvalidParams', error.code
+    assert error.message.match(/has to be a valid/)
+  end
+
+  should "instrument error responses" do
+    events = []
+    callback = proc{ |*args| events << ActiveSupport::Notifications::Event.new(*args) }
+
+    ActiveSupport::Notifications.subscribed(callback, "amazon_flex_pay.api") do
+      net_http_res = stub(:code => 400)
+      http_response = RestClient::Response.create(error_response, net_http_res, nil)
+      RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
+
+      begin
+        request = TestRequest.new(:foo => 'bar')
+        AmazonFlexPay.send(:submit, request)
+      rescue AmazonFlexPay::API::Error
+      end
+    end
+
+    assert_equal 1, events.size
+    assert_equal 'TestRequest', events.first.payload[:action]
+    assert_equal 400, events.first.payload[:code]
+    assert events.first.payload.has_key?(:request)
+    assert events.first.payload.has_key?(:response)
+    assert events.first.duration > 0.1, events.first.duration.to_s
+  end
+
 end

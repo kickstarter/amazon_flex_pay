@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
-class AmazonFlexPayPipelinesTest < AmazonFlexPay::Test
+class AmazonFlexPay::PipelinesTest < AmazonFlexPay::Test
   should "build a edit token pipeline" do
     AmazonFlexPay.expects(:cbui).with do |pipeline|
       assert pipeline.is_a? AmazonFlexPay::Pipelines::EditToken
