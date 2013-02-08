@@ -6,19 +6,14 @@ module AmazonFlexPay::Pipelines #:nodoc:
     attribute :cobranding_url
     attribute :website_description
 
-    # Returns a full redirectable URL for this pipeline.
-    def to_url
-      AmazonFlexPay.pipeline_endpoint + '?' + self.to_param
-    end
-
     # Converts the Pipeline object into parameters and signs them.
-    def to_param
+    def to_param(client)
       params = to_hash.merge(
-        'callerKey' => AmazonFlexPay.access_key,
+        'callerKey' => client.access_key,
         'signatureVersion' => 2,
         'signatureMethod' => 'HmacSHA256'
       )
-      params['signature'] = AmazonFlexPay.sign(AmazonFlexPay.pipeline_endpoint, params)
+      params['signature'] = client.sign(client.cbui_endpoint, params)
       AmazonFlexPay::Util.query_string(params)
     end
 

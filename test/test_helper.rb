@@ -15,7 +15,8 @@ class AmazonFlexPay::Test < Test::Unit::TestCase
   def self.should(name, &block) # very simple syntax
     define_method("test_should_#{name.gsub(/[ -]/, '_')}", &block)
   end
-end
 
-AmazonFlexPay.access_key = 'foo'
-AmazonFlexPay.secret_key = 'bar'
+  def client
+    @client ||= AmazonFlexPay::Client.new('foo', 'bar')
+  end
+end

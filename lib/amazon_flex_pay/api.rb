@@ -156,12 +156,16 @@ module AmazonFlexPay
       submit VerifySignature.new(:url_end_point => url, :http_parameters => params)
     end
 
+    def api_endpoint # :nodoc:
+      AmazonFlexPay::ENDPOINTS[self.mode.to_sym][:api]
+    end
+
     protected
 
     # This compiles an API request object into a URL, sends it to Amazon, and processes
     # the response.
     def submit(request)
-      url = request.to_url
+      url = self.api_endpoint + '?' + request.to_param(self)
       ActiveSupport::Notifications.instrument("amazon_flex_pay.api", :action => request.action_name, :request => url) do |payload|
         begin
           http = RestClient.get(url)

@@ -38,10 +38,15 @@ module AmazonFlexPay
       cbui SingleUse.new(options.merge(:caller_reference => caller_reference, :return_url => return_url))
     end
 
+    def cbui_endpoint # :nodoc:
+      ENDPOINTS[self.mode.to_sym][:cbui]
+    end
+
     protected
 
+    # Creates a full CBUI URL
     def cbui(pipeline)
-      pipeline.to_url
+      self.cbui_endpoint + '?' + pipeline.to_param(self)
     end
   end
 end

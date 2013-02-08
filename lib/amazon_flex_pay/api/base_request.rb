@@ -1,17 +1,13 @@
 module AmazonFlexPay::API #:nodoc:
   class BaseRequest < AmazonFlexPay::Model #:nodoc:
-    def to_url
-      AmazonFlexPay.api_endpoint + '?' + self.to_param
-    end
-
-    def to_param
+    def to_param(client)
       params = to_hash.merge(
-        'AWSAccessKeyId' => AmazonFlexPay.access_key,
+        'AWSAccessKeyId' => client.access_key,
         'Timestamp' => format_value(Time.now),
         'SignatureVersion' => 2,
         'SignatureMethod' => 'HmacSHA256'
       )
-      params['Signature'] = AmazonFlexPay.sign(AmazonFlexPay.api_endpoint, params)
+      params['Signature'] = client.sign(client.api_endpoint, params)
       AmazonFlexPay::Util.query_string(params)
     end
 
