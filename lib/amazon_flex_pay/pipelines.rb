@@ -1,5 +1,5 @@
-require 'amazon_flex_pay/pipelines/base'
-Dir[File.dirname(__FILE__) + '/pipelines/*'].each do |p| require "amazon_flex_pay/pipelines/#{File.basename(p)}" end
+require_relative 'pipelines/base'
+Dir[File.dirname(__FILE__) + '/pipelines/*'].each do |p| require_relative "pipelines/#{File.basename(p)}" end
 
 module AmazonFlexPay
   module Pipelines

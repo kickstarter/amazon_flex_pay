@@ -9,14 +9,14 @@ require 'active_support' # camelcase, underscore
 require 'active_support/inflector'
 require 'active_support/notifications'
 
-require 'amazon_flex_pay/util'
-require 'amazon_flex_pay/signature'
-require 'amazon_flex_pay/model'
-require 'amazon_flex_pay/enumerations'
-require 'amazon_flex_pay/data_types'
+require_relative 'amazon_flex_pay/util'
+require_relative 'amazon_flex_pay/signature'
+require_relative 'amazon_flex_pay/model'
+require_relative 'amazon_flex_pay/enumerations'
+require_relative 'amazon_flex_pay/data_types'
 
-require 'amazon_flex_pay/api'
-require 'amazon_flex_pay/pipelines'
+require_relative 'amazon_flex_pay/api'
+require_relative 'amazon_flex_pay/pipelines'
 
 module AmazonFlexPay
   VERSION = '0.9.14'

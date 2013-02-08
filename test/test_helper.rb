@@ -5,11 +5,9 @@ gem 'rails', '3.2.5'
 require 'mocha'
 
 # load the gem
-root = File.dirname(__FILE__) + '/../lib'
-$LOAD_PATH.unshift root
-require root + '/amazon_flex_pay'
+require_relative '../lib/amazon_flex_pay'
 
-require 'response_samples'
+require_relative 'response_samples'
 
 class AmazonFlexPay::Test < Test::Unit::TestCase
   def default_test; end # quiet Test::Unit

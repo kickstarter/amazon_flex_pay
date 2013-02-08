@@ -1,6 +1,5 @@
-# load all api classes
-require 'amazon_flex_pay/api/base_request'
-Dir[File.dirname(__FILE__) + '/api/*'].each do |p| require "amazon_flex_pay/api/#{File.basename(p)}" end
+require_relative 'api/base_request'
+Dir[File.dirname(__FILE__) + '/api/*'].each do |p| require_relative "api/#{File.basename(p)}" end
 
 module AmazonFlexPay
   module API
