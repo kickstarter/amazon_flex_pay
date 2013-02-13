@@ -1,5 +1,5 @@
 module AmazonFlexPay::Pipelines #:nodoc:
-  class Base < AmazonFlexPay::Model
+  class Base < AmazonFlexPay::Model #:nodoc:
     attribute :'returnURL' # required
     attribute :caller_reference # required
     attribute :cobranding_style

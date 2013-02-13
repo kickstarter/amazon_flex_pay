@@ -1,5 +1,5 @@
 module AmazonFlexPay::API #:nodoc:
-  class BaseRequest < AmazonFlexPay::Model
+  class BaseRequest < AmazonFlexPay::Model #:nodoc:
     def to_url
       AmazonFlexPay.api_endpoint + '?' + self.to_param
     end
@@ -27,7 +27,7 @@ module AmazonFlexPay::API #:nodoc:
       self.class.to_s.split('::').last
     end
 
-    class BaseResponse < AmazonFlexPay::Model
+    class BaseResponse < AmazonFlexPay::Model #:nodoc:
       attribute :request
       attribute :request_id
 
@@ -45,7 +45,7 @@ module AmazonFlexPay::API #:nodoc:
       end
     end
 
-    class ErrorResponse < AmazonFlexPay::Model
+    class ErrorResponse < AmazonFlexPay::Model #:nodoc:
       attribute :request_id
 
       def self.from_xml(xml)
