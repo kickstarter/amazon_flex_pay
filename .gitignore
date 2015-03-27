@@ -1,2 +1,5 @@
 rdoc
 *.gem
+.bundle
+Gemfile.lock
+vendor
