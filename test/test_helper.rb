@@ -1,19 +1,19 @@
 # load the support libraries
-require 'test/unit'
 require 'rubygems'
-gem 'rails', '3.2.5'
-require 'mocha'
+require 'minitest/autorun'
+require 'minitest/spec'
+require 'minitest/pride'
+require 'mocha/setup'
+require 'shoulda'
 
 # load the gem
 require_relative '../lib/amazon_flex_pay'
 
 require_relative 'response_samples'
 
-class AmazonFlexPay::Test < Test::Unit::TestCase
-  def default_test; end # quiet Test::Unit
-
-  def self.should(name, &block) # very simple syntax
-    define_method("test_should_#{name.gsub(/[ -]/, '_')}", &block)
+class AmazonFlexPay::Test <  MiniTest::Unit::TestCase
+  def assert_nothing_raised(*)
+    yield
   end
 end
 

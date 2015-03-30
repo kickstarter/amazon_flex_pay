@@ -376,12 +376,12 @@ class AmazonFlexPay::APITest < AmazonFlexPay::Test
 
   should "catch and parse errors" do
     net_http_res = stub(:code => 400)
-    http_response = RestClient::Response.create(error_response, net_http_res, nil)
+    request = TestRequest.new(:foo => 'bar')
+    http_response = RestClient::Response.create(error_response, net_http_res, nil, request)
     RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
 
     error = nil
     begin
-      request = TestRequest.new(:foo => 'bar')
       AmazonFlexPay.send(:submit, request)
     rescue AmazonFlexPay::API::InvalidParams => e
       error = e
@@ -397,11 +397,11 @@ class AmazonFlexPay::APITest < AmazonFlexPay::Test
 
     ActiveSupport::Notifications.subscribed(callback, "amazon_flex_pay.api") do
       net_http_res = stub(:code => 400)
-      http_response = RestClient::Response.create(error_response, net_http_res, nil)
+      request = TestRequest.new(:foo => 'bar')
+      http_response = RestClient::Response.create(error_response, net_http_res, nil, request)
       RestClient.expects(:get).raises(RestClient::BadRequest.new(http_response))
 
       begin
-        request = TestRequest.new(:foo => 'bar')
         AmazonFlexPay.send(:submit, request)
       rescue AmazonFlexPay::API::Error
       end
