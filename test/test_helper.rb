@@ -11,7 +11,7 @@ require_relative '../lib/amazon_flex_pay'
 
 require_relative 'response_samples'
 
-class AmazonFlexPay::Test <  MiniTest::Unit::TestCase
+class AmazonFlexPay::Test < Minitest::Test
   def assert_nothing_raised(*)
     yield
   end
