@@ -34,7 +34,7 @@ class AmazonFlexPay::API::BaseRequestTest < AmazonFlexPay::Test
   end
 
   should "parameterize api requests" do
-    Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
+    Time.stubs(:now).returns(Date.parse('Jan 1 2011').to_time) # so the signature remains constant
 
     request = TestRequest.new(:foo => 'bar', :amount => {:value => '3.14', :currency_code => 'USD'})
     param = request.to_param
