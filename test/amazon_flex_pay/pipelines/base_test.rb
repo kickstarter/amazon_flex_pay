@@ -16,7 +16,7 @@ class AmazonFlexPay::Pipelines::BaseTest < AmazonFlexPay::Test
   end
 
   should "parameterize signed pipelines" do
-    Time.stubs(:now).returns(Time.parse('Jan 1 2011')) # so the signature remains constant
+    Time.stubs(:now).returns(Date.parse('Jan 1 2011').to_time) # so the signature remains constant
 
     pipeline = TestPipeline.new(:foo => 'bar', :return_url => 'http://example.com/return')
     param = pipeline.to_param
