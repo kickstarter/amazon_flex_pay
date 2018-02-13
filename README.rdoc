@@ -2,6 +2,8 @@
 
 Library for Amazon's Flexible Payment Service.
 
+<b>As of 2015, Amazon Flexible Payment Service has shut down and as a result this gem is no longer maintained.</b>
+
 == INITIALIZE
 
 Initialize the gem, probably in config/initializers/amazon_flex_pay.rb (for Rails):
